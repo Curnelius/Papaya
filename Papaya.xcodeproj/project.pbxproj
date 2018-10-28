@@ -14,6 +14,7 @@
 		2525B0822185A97D007025C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2525B0802185A97D007025C2 /* LaunchScreen.storyboard */; };
 		2525B08D2185A97D007025C2 /* PapayaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B08C2185A97D007025C2 /* PapayaTests.swift */; };
 		2525B0982185A97D007025C2 /* PapayaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0972185A97D007025C2 /* PapayaUITests.swift */; };
+		2525B0A72185AC82007025C2 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0A62185AC82007025C2 /* Globals.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		2525B0932185A97D007025C2 /* PapayaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PapayaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2525B0972185A97D007025C2 /* PapayaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapayaUITests.swift; sourceTree = "<group>"; };
 		2525B0992185A97D007025C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2525B0A62185AC82007025C2 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		2525B06B2185A97B007025C2 = {
 			isa = PBXGroup;
 			children = (
+				2525B0A52185AAB7007025C2 /* Globals */,
 				2525B0762185A97B007025C2 /* Papaya */,
 				2525B08B2185A97D007025C2 /* PapayaTests */,
 				2525B0962185A97D007025C2 /* PapayaUITests */,
@@ -123,6 +126,14 @@
 				2525B0992185A97D007025C2 /* Info.plist */,
 			);
 			path = PapayaUITests;
+			sourceTree = "<group>";
+		};
+		2525B0A52185AAB7007025C2 /* Globals */ = {
+			isa = PBXGroup;
+			children = (
+				2525B0A62185AC82007025C2 /* Globals.swift */,
+			);
+			path = Globals;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +269,7 @@
 			files = (
 				2525B07A2185A97B007025C2 /* ViewController.swift in Sources */,
 				2525B0782185A97B007025C2 /* AppDelegate.swift in Sources */,
+				2525B0A72185AC82007025C2 /* Globals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
