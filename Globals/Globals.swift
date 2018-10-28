@@ -7,3 +7,27 @@
 //
 
 import Foundation
+import UIKit
+
+
+class Globals {
+    
+    static let sharedInstance = Globals()
+    
+    
+    //vars colors
+     var font:String
+
+
+
+            init()
+            {
+
+                self.font=""
+
+            }
+
+
+
+}
+
