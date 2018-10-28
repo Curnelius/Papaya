@@ -23,7 +23,7 @@ class Globals {
             init()
             {
 
-                self.font=""
+                self.font="Lucida Grande"
 
             }
 

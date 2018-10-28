@@ -15,6 +15,9 @@
 		2525B08D2185A97D007025C2 /* PapayaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B08C2185A97D007025C2 /* PapayaTests.swift */; };
 		2525B0982185A97D007025C2 /* PapayaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0972185A97D007025C2 /* PapayaUITests.swift */; };
 		2525B0A72185AC82007025C2 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0A62185AC82007025C2 /* Globals.swift */; };
+		2525B0AA2185B725007025C2 /* Curve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0A92185B725007025C2 /* Curve.swift */; };
+		2525B0AD2185B853007025C2 /* ViewTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0AC2185B853007025C2 /* ViewTemplate.swift */; };
+		2525B0AF218608C8007025C2 /* CurveTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0AE218608C8007025C2 /* CurveTitle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		2525B0972185A97D007025C2 /* PapayaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapayaUITests.swift; sourceTree = "<group>"; };
 		2525B0992185A97D007025C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2525B0A62185AC82007025C2 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		2525B0A92185B725007025C2 /* Curve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Curve.swift; sourceTree = "<group>"; };
+		2525B0AC2185B853007025C2 /* ViewTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTemplate.swift; sourceTree = "<group>"; };
+		2525B0AE218608C8007025C2 /* CurveTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveTitle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,8 +85,10 @@
 		2525B06B2185A97B007025C2 = {
 			isa = PBXGroup;
 			children = (
+				2525B0A82185B6C8007025C2 /* Curve */,
 				2525B0A52185AAB7007025C2 /* Globals */,
 				2525B0762185A97B007025C2 /* Papaya */,
+				2525B0AB2185B82C007025C2 /* Templates */,
 				2525B08B2185A97D007025C2 /* PapayaTests */,
 				2525B0962185A97D007025C2 /* PapayaUITests */,
 				2525B0752185A97B007025C2 /* Products */,
@@ -134,6 +142,23 @@
 				2525B0A62185AC82007025C2 /* Globals.swift */,
 			);
 			path = Globals;
+			sourceTree = "<group>";
+		};
+		2525B0A82185B6C8007025C2 /* Curve */ = {
+			isa = PBXGroup;
+			children = (
+				2525B0A92185B725007025C2 /* Curve.swift */,
+				2525B0AE218608C8007025C2 /* CurveTitle.swift */,
+			);
+			path = Curve;
+			sourceTree = "<group>";
+		};
+		2525B0AB2185B82C007025C2 /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				2525B0AC2185B853007025C2 /* ViewTemplate.swift */,
+			);
+			path = Templates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,8 +293,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2525B07A2185A97B007025C2 /* ViewController.swift in Sources */,
+				2525B0AD2185B853007025C2 /* ViewTemplate.swift in Sources */,
+				2525B0AF218608C8007025C2 /* CurveTitle.swift in Sources */,
 				2525B0782185A97B007025C2 /* AppDelegate.swift in Sources */,
 				2525B0A72185AC82007025C2 /* Globals.swift in Sources */,
+				2525B0AA2185B725007025C2 /* Curve.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
