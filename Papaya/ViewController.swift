@@ -23,11 +23,16 @@ class ViewController: UIViewController {
         //add curve
         let size = CGRect(x: 10, y: 200, width: w, height: h)
         let curve = Curve(frame: size)
-        curve.curveTitles.title.text="Rani"
-        curve.curveTitles.subtitle.text="In The Graph"
+        curve.curveTitles.setTitles(titleName: "Sensor Garden", subtitleName: "Under the garden tree")
+        curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande", titleSize: 22, subtitleSize: 11)
         self.view.addSubview(curve)
+
+        //curve.addGraph(name: "sensor", points: [[0,0],[1,3],[2,5],[3,6],[5,5],[6,12]], lineColor: .black, fillColor: .red)
         
         
+ 
+        
+   
         
         
      }

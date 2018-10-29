@@ -13,13 +13,13 @@ class CurveTitle: UIView {
     //title
     var title:UILabel!
     var titleDefault = ""
-    var titleDefaultFont = "Lucida Grande"
+    var titleDefaultFont = "Avenir-Light"
     
     
     //subtitle
     var subtitle:UILabel!
     var subtitleDefault = ""
-    var subtitleDefaultFont = "Lucida Grande"
+    var subtitleDefaultFont = "Avenir-Light"
     
     
     
@@ -30,25 +30,39 @@ class CurveTitle: UIView {
         
         super.init(frame : frame)
         
-        title=UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height/2.0))
+        let titleToSub:CGFloat = 0.66
+        let Deltas:CGFloat = 0.05*frame.size.width
+        
+        title=UILabel(frame: CGRect(x:Deltas, y:Deltas, width: self.frame.width/2.0, height: self.frame.height*titleToSub))
         title.text=titleDefault
         title.textAlignment = .left
         title.text=titleDefault
-        title.font=UIFont(name: titleDefaultFont, size: 16)
+        title.font=UIFont(name: titleDefaultFont, size: 24)
         self.addSubview(title)
         
         
-        subtitle=UILabel(frame: CGRect(x: 0, y: title.frame.maxY, width: self.frame.width, height: self.frame.height/2.0))
+        subtitle=UILabel(frame: CGRect(x:Deltas,y:title.frame.maxY, width: self.frame.width/2.0, height: self.frame.height*(1.0-titleToSub)))
         subtitle.text=subtitleDefault
         subtitle.textAlignment = .left
         subtitle.text=subtitleDefault
-        subtitle.font=UIFont(name: subtitleDefaultFont, size: 12)
+        subtitle.font=UIFont(name: subtitleDefaultFont, size: 10)
         self.addSubview(subtitle)
         
  
     }
     
     
+    func setTitles(titleName:String,subtitleName:String)
+    {
+        title.text=titleName
+        subtitle.text=subtitleName
+    }
+    
+    func setFonts(titleFont:String,subtitleFont:String,titleSize:CGFloat,subtitleSize:CGFloat)
+    {
+        title.font=UIFont(name: titleFont, size: titleSize)
+        subtitle.font=UIFont(name: subtitleFont, size: subtitleSize)
+    }
     
     
     

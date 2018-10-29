@@ -13,6 +13,8 @@ class Curve: UIView {
     
     
     var curveTitles:CurveTitle!
+    private var graphs = [[String:UIView]]()
+ 
 
  
     
@@ -28,11 +30,20 @@ class Curve: UIView {
         
         
         //add title
-        curveTitles = CurveTitle(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.2*self.frame.height))
+        curveTitles = CurveTitle(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.15*self.frame.height))
         self.addSubview(curveTitles)
         
         
     }
+    
+    func addGraph(name:String,points:[[Date:CGFloat]],lineColor:UIColor,fillColor:UIColor)
+    {
+        let graph = Graph(lineColor: lineColor, fillColor: fillColor, size: CGSize(width: frame.width, height: frame.height/2.0))
+        graphs.append([name:graph])
+        self.addSubview(graph)
+    }
+    
+    
     
     
     

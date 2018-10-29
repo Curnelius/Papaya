@@ -18,6 +18,10 @@
 		2525B0AA2185B725007025C2 /* Curve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0A92185B725007025C2 /* Curve.swift */; };
 		2525B0AD2185B853007025C2 /* ViewTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0AC2185B853007025C2 /* ViewTemplate.swift */; };
 		2525B0AF218608C8007025C2 /* CurveTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0AE218608C8007025C2 /* CurveTitle.swift */; };
+		255004CF2186A8E0003DF21D /* LucidaGrande.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 255004CD2186A6F2003DF21D /* LucidaGrande.ttf */; };
+		255004D02186A8E0003DF21D /* LucidaGrandeBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 255004CE2186A6F2003DF21D /* LucidaGrandeBold.ttf */; };
+		255004D22186B0E5003DF21D /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D12186B0E5003DF21D /* Graph.swift */; };
+		255004D42186B94D003DF21D /* Geometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D32186B94D003DF21D /* Geometric.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,10 @@
 		2525B0A92185B725007025C2 /* Curve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Curve.swift; sourceTree = "<group>"; };
 		2525B0AC2185B853007025C2 /* ViewTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTemplate.swift; sourceTree = "<group>"; };
 		2525B0AE218608C8007025C2 /* CurveTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveTitle.swift; sourceTree = "<group>"; };
+		255004CD2186A6F2003DF21D /* LucidaGrande.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = LucidaGrande.ttf; sourceTree = "<group>"; };
+		255004CE2186A6F2003DF21D /* LucidaGrandeBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = LucidaGrandeBold.ttf; sourceTree = "<group>"; };
+		255004D12186B0E5003DF21D /* Graph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
+		255004D32186B94D003DF21D /* Geometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometric.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +93,7 @@
 		2525B06B2185A97B007025C2 = {
 			isa = PBXGroup;
 			children = (
+				255004CB2186A6C3003DF21D /* Assets */,
 				2525B0A82185B6C8007025C2 /* Curve */,
 				2525B0A52185AAB7007025C2 /* Globals */,
 				2525B0762185A97B007025C2 /* Papaya */,
@@ -149,6 +158,8 @@
 			children = (
 				2525B0A92185B725007025C2 /* Curve.swift */,
 				2525B0AE218608C8007025C2 /* CurveTitle.swift */,
+				255004D12186B0E5003DF21D /* Graph.swift */,
+				255004D32186B94D003DF21D /* Geometric.swift */,
 			);
 			path = Curve;
 			sourceTree = "<group>";
@@ -159,6 +170,23 @@
 				2525B0AC2185B853007025C2 /* ViewTemplate.swift */,
 			);
 			path = Templates;
+			sourceTree = "<group>";
+		};
+		255004CB2186A6C3003DF21D /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				255004CC2186A6CB003DF21D /* Fonts */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		255004CC2186A6CB003DF21D /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				255004CD2186A6F2003DF21D /* LucidaGrande.ttf */,
+				255004CE2186A6F2003DF21D /* LucidaGrandeBold.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +293,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				255004CF2186A8E0003DF21D /* LucidaGrande.ttf in Resources */,
+				255004D02186A8E0003DF21D /* LucidaGrandeBold.ttf in Resources */,
 				2525B0822185A97D007025C2 /* LaunchScreen.storyboard in Resources */,
 				2525B07F2185A97D007025C2 /* Assets.xcassets in Resources */,
 				2525B07D2185A97B007025C2 /* Main.storyboard in Resources */,
@@ -293,7 +323,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2525B07A2185A97B007025C2 /* ViewController.swift in Sources */,
+				255004D42186B94D003DF21D /* Geometric.swift in Sources */,
 				2525B0AD2185B853007025C2 /* ViewTemplate.swift in Sources */,
+				255004D22186B0E5003DF21D /* Graph.swift in Sources */,
 				2525B0AF218608C8007025C2 /* CurveTitle.swift in Sources */,
 				2525B0782185A97B007025C2 /* AppDelegate.swift in Sources */,
 				2525B0A72185AC82007025C2 /* Globals.swift in Sources */,
