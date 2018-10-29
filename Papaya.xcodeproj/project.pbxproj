@@ -22,6 +22,8 @@
 		255004D02186A8E0003DF21D /* LucidaGrandeBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 255004CE2186A6F2003DF21D /* LucidaGrandeBold.ttf */; };
 		255004D22186B0E5003DF21D /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D12186B0E5003DF21D /* Graph.swift */; };
 		255004D42186B94D003DF21D /* Geometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D32186B94D003DF21D /* Geometric.swift */; };
+		255004D62186E878003DF21D /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D52186E878003DF21D /* DateExtension.swift */; };
+		255004D82186F792003DF21D /* DatesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D72186F792003DF21D /* DatesFilter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,8 @@
 		255004CE2186A6F2003DF21D /* LucidaGrandeBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = LucidaGrandeBold.ttf; sourceTree = "<group>"; };
 		255004D12186B0E5003DF21D /* Graph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		255004D32186B94D003DF21D /* Geometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometric.swift; sourceTree = "<group>"; };
+		255004D52186E878003DF21D /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		255004D72186F792003DF21D /* DatesFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesFilter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +164,8 @@
 				2525B0AE218608C8007025C2 /* CurveTitle.swift */,
 				255004D12186B0E5003DF21D /* Graph.swift */,
 				255004D32186B94D003DF21D /* Geometric.swift */,
+				255004D72186F792003DF21D /* DatesFilter.swift */,
+				255004D52186E878003DF21D /* DateExtension.swift */,
 			);
 			path = Curve;
 			sourceTree = "<group>";
@@ -325,7 +331,9 @@
 				2525B07A2185A97B007025C2 /* ViewController.swift in Sources */,
 				255004D42186B94D003DF21D /* Geometric.swift in Sources */,
 				2525B0AD2185B853007025C2 /* ViewTemplate.swift in Sources */,
+				255004D82186F792003DF21D /* DatesFilter.swift in Sources */,
 				255004D22186B0E5003DF21D /* Graph.swift in Sources */,
+				255004D62186E878003DF21D /* DateExtension.swift in Sources */,
 				2525B0AF218608C8007025C2 /* CurveTitle.swift in Sources */,
 				2525B0782185A97B007025C2 /* AppDelegate.swift in Sources */,
 				2525B0A72185AC82007025C2 /* Globals.swift in Sources */,
