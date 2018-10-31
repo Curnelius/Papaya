@@ -22,6 +22,7 @@ class Graph: UIView {
     var curvePoints = [CGPoint]()
     
  
+ 
     
     
     init (frame : CGRect,points:[CGPoint], fillColor:UIColor,lineColor:UIColor)
@@ -44,7 +45,7 @@ class Graph: UIView {
          let path = UIBezierPath()
          var point1:CGPoint!
          var point2:CGPoint!
-     
+         //var smoothData = self.smooth(alpha: 0.1)
         
          for i in 0..<curvePoints.count-1
          {
@@ -54,11 +55,13 @@ class Graph: UIView {
             point1.y=size!.height-point1.y
             point2.y=size!.height-point2.y
             
+            
+            
            
             if( i == 0 ) {path.move(to: point1)}
             
             path.addLine(to: point2)
-            
+ 
             
             
   
@@ -79,7 +82,7 @@ class Graph: UIView {
         shapeLayer.path = path.cgPath
         shapeLayer.fillColor = curveFillColor!.cgColor
         shapeLayer.strokeColor = curveLineColor!.cgColor
-        shapeLayer.lineWidth = 2.0
+        shapeLayer.lineWidth = 1.0
         shapeLayer.lineJoin = CAShapeLayerLineJoin.round
         shapeLayer.lineCap = CAShapeLayerLineCap.round
         shapeLayer.fillRule = .evenOdd
@@ -91,7 +94,24 @@ class Graph: UIView {
     
  
 
-    
+    func smooth(alpha:CGFloat)->[CGPoint]
+    {
+        
+         //Y(n) = (1-ß)*Y(n-1)
+        var lastPoint = CGPoint(x: 0, y: 0  )
+        var smoothData = [CGPoint]()
+        
+        for point in curvePoints
+        {
+
+            let newY = (1-alpha)*lastPoint.y
+            let newPoint = CGPoint(x: point.x, y: newY)
+            smoothData.append(newPoint)
+            lastPoint=point
+        }
+        
+        return smoothData
+    }
  
  
     

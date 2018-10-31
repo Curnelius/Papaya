@@ -33,27 +33,27 @@ class DatesFilter {
     
     
     
-    //return array of numbers 0-1 which relative to the whole time span, so  for 8-10am, 9am is 0.5
-    func getRelativeTimes(resolutionMin:Int,withDates:[Date])->[CGFloat]
+    //return  numbers 0-1 which relative to the whole time span, so  for 8-10am, 9am is 0.5
+    func getRelativeTime(resolutionMin:Int,withDate:Date)->CGFloat
     {
         //calculate in seconds resolution
         
         let timeSpanSec:CGFloat  = 60.0*CGFloat(resolutionMin)
-        var finalArr = [CGFloat]()
+     
   
-        
-        for date in withDates
-        {
-            let delta:Int = date.seconds(from: self.getOpenTime(resolutionMin: resolutionMin)) //extension used
+     
+            let delta:Int = withDate.seconds(from: self.getOpenTime(resolutionMin: resolutionMin)) //extension used
             
             if ( delta >= 0 )
             {
                 let relative = CGFloat(delta) / timeSpanSec
-                finalArr.append(relative)
+                return relative
+        
             }
+        return -1
 
-        }
-        return finalArr
+  
+        
         
     }
     
