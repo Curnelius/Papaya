@@ -64,6 +64,19 @@ class DatesFilter {
         return openDateForSpan
     }
     
+    func getDateInterval(forDate:Date,minutes:Int)->Date
+    {
+        
+        return  forDate.addingTimeInterval(TimeInterval(1.0*CGFloat(minutes) * 60.0))
+
+    }
+    
+    func isDateLaterThanNow(withDate:Date)->Bool
+    {
+        if(withDate > Date()) {return true}
+        else {return false }
+    }
+    
     
     
     

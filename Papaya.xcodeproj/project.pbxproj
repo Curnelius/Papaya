@@ -24,6 +24,7 @@
 		255004D42186B94D003DF21D /* Geometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D32186B94D003DF21D /* Geometric.swift */; };
 		255004D62186E878003DF21D /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D52186E878003DF21D /* DateExtension.swift */; };
 		255004D82186F792003DF21D /* DatesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D72186F792003DF21D /* DatesFilter.swift */; };
+		255004DA21899480003DF21D /* XYAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D921899480003DF21D /* XYAxis.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		255004D32186B94D003DF21D /* Geometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometric.swift; sourceTree = "<group>"; };
 		255004D52186E878003DF21D /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		255004D72186F792003DF21D /* DatesFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesFilter.swift; sourceTree = "<group>"; };
+		255004D921899480003DF21D /* XYAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYAxis.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 				2525B0A92185B725007025C2 /* Curve.swift */,
 				2525B0AE218608C8007025C2 /* CurveTitle.swift */,
 				255004D12186B0E5003DF21D /* Graph.swift */,
+				255004D921899480003DF21D /* XYAxis.swift */,
 				255004D32186B94D003DF21D /* Geometric.swift */,
 				255004D72186F792003DF21D /* DatesFilter.swift */,
 				255004D52186E878003DF21D /* DateExtension.swift */,
@@ -338,6 +341,7 @@
 				2525B0782185A97B007025C2 /* AppDelegate.swift in Sources */,
 				2525B0A72185AC82007025C2 /* Globals.swift in Sources */,
 				2525B0AA2185B725007025C2 /* Curve.swift in Sources */,
+				255004DA21899480003DF21D /* XYAxis.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

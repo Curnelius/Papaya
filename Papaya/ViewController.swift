@@ -43,7 +43,7 @@ class ViewController: UIViewController {
      
         
         var pointsArray2 = [CGFloat]()
-        pointsArray2.append(contentsOf: [6.0,80.0,12.0,10.0,5.0,14.0,12.0,10.0,5.0,3.0])
+        pointsArray2.append(contentsOf: [6.0,70.0,12.0,10.0,5.0,14.0,12.0,10.0,5.0,3.0])
         
         
         
@@ -78,7 +78,7 @@ class ViewController: UIViewController {
         self.view.addSubview(curve)
 
         curve.addCurve(name: "main", data: data, resolutionInMin: 9, Yresolution: 0, fillColor:UIColor.yellow,lineColor:UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 0.5)  )
-        curve.addCurve(name: "second", data: data2, resolutionInMin: 9, Yresolution: 0, fillColor:UIColor.clear,lineColor:UIColor.black)
+        curve.addCurve(name: "second", data: data2, resolutionInMin: 9, Yresolution: 0, fillColor:UIColor.clear,lineColor:UIColor.green)
 
 
      

@@ -35,7 +35,6 @@ class Graph: UIView {
         size=frame.size
         
         
-        //self.layer.cornerRadius = 20.0
     }
     
     
@@ -68,11 +67,14 @@ class Graph: UIView {
 
          }
         
-        //close the path
-        path.addLine(to: CGPoint(x: point2.x, y: frame.height))
-        path.addLine(to: CGPoint(x:curvePoints[0].x, y: frame.height))
-        //path.addLine(to: firstpoint)
-        //path.close()
+        //close the path if we have a fill
+        if(curveFillColor != UIColor.clear)
+        {
+            path.addLine(to: CGPoint(x: point2.x, y: frame.height))
+            path.addLine(to: CGPoint(x:curvePoints[0].x, y: frame.height))
+            //path.addLine(to: firstpoint)
+            //path.close()
+        }
         
      
         
@@ -82,7 +84,7 @@ class Graph: UIView {
         shapeLayer.path = path.cgPath
         shapeLayer.fillColor = curveFillColor!.cgColor
         shapeLayer.strokeColor = curveLineColor!.cgColor
-        shapeLayer.lineWidth = 1.0
+        shapeLayer.lineWidth = 2.0
         shapeLayer.lineJoin = CAShapeLayerLineJoin.round
         shapeLayer.lineCap = CAShapeLayerLineCap.round
         shapeLayer.fillRule = .evenOdd

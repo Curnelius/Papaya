@@ -14,7 +14,6 @@ class Curve: UIView {
     
     var curveTitles:CurveTitle!
     private var graphs = [[String:UIView]]()
-    private var graphHeight:CGFloat!
     private var curveSize:CGRect!
     private  let geometric = Geometric()
 
@@ -28,18 +27,22 @@ class Curve: UIView {
         super.init(frame : frame)
         
         //self  UI
-        self.layer.cornerRadius = 20.0
+        self.layer.cornerRadius = 22.0
         self.backgroundColor=UIColor.white
-        
-        //graph geometrics
-         graphHeight = 0.7*self.frame.height
-         curveSize=CGRect(x:0, y:(self.frame.height-graphHeight )/2.0, width:self.frame.width, height: graphHeight)
         
         
         
         //add title
-        curveTitles = CurveTitle(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.15*self.frame.height))
+        curveTitles = CurveTitle(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.175*self.frame.height))
         self.addSubview(curveTitles)
+        
+        
+        //graph geometrics
+        let bottomSpace = 0.125*self.frame.height
+        let graphHeight = frame.height-bottomSpace-curveTitles.frame.size.height
+        
+        curveSize=CGRect(x:0, y:curveTitles.frame.maxY, width:self.frame.width, height: graphHeight)
+        
  
     }
     

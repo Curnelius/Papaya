@@ -31,9 +31,9 @@ class CurveTitle: UIView {
         super.init(frame : frame)
         
         let titleToSub:CGFloat = 0.66
-        let Deltas:CGFloat = 0.05*frame.size.width
+        let deltas:CGFloat = 0.04*frame.size.width
         
-        title=UILabel(frame: CGRect(x:Deltas, y:Deltas, width: self.frame.width/2.0, height: self.frame.height*titleToSub))
+        title=UILabel(frame: CGRect(x:deltas, y:deltas, width: self.frame.width/2.0, height: (self.frame.height-deltas)*titleToSub))
         title.text=titleDefault
         title.textAlignment = .left
         title.text=titleDefault
@@ -41,7 +41,7 @@ class CurveTitle: UIView {
         self.addSubview(title)
         
         
-        subtitle=UILabel(frame: CGRect(x:Deltas,y:title.frame.maxY, width: self.frame.width/2.0, height: self.frame.height*(1.0-titleToSub)))
+        subtitle=UILabel(frame: CGRect(x:deltas,y:title.frame.maxY, width: self.frame.width/2.0, height: (self.frame.height-deltas)*(1.0-titleToSub)))
         subtitle.text=subtitleDefault
         subtitle.textAlignment = .left
         subtitle.text=subtitleDefault
