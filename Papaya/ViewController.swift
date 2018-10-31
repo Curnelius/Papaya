@@ -77,8 +77,8 @@ class ViewController: UIViewController {
         curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande", titleSize: 22, subtitleSize: 11)
         self.view.addSubview(curve)
 
-        curve.addCurve(name: "main", data: data, resolutionInMin: 9, Yresolution: 0, fillColor:UIColor.yellow,lineColor:UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 0.5)  )
-        curve.addCurve(name: "second", data: data2, resolutionInMin: 9, Yresolution: 0, fillColor:UIColor.clear,lineColor:UIColor.green)
+        curve.addCurve(name: "main", data: data, fillColor:UIColor.yellow,lineColor:UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 0.5)  )
+        curve.addCurve(name: "second", data: data2, fillColor:UIColor.clear,lineColor:UIColor.green)
 
 
      

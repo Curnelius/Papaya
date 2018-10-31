@@ -16,6 +16,8 @@ class Curve: UIView {
     private var graphs = [[String:UIView]]()
     private var curveSize:CGRect!
     private  let geometric = Geometric()
+    private let currentXResolution:Int = 10
+    private let currentYResolution:Int = 0
 
  
 
@@ -26,9 +28,14 @@ class Curve: UIView {
         
         super.init(frame : frame)
         
+        
+        
         //self  UI
         self.layer.cornerRadius = 22.0
         self.backgroundColor=UIColor.white
+        
+        
+        
         
         
         
@@ -37,20 +44,27 @@ class Curve: UIView {
         self.addSubview(curveTitles)
         
         
-        //graph geometrics
+       
+        
+        
+        //set graph geometrics
         let bottomSpace = 0.125*self.frame.height
         let graphHeight = frame.height-bottomSpace-curveTitles.frame.size.height
-        
         curveSize=CGRect(x:0, y:curveTitles.frame.maxY, width:self.frame.width, height: graphHeight)
         
- 
+        
+        
+        //add axis
+        let axisFrame=CGRect(x: 0, y: graphHeight-bottomSpace, width: frame.width, height: bottomSpace)
+        let axis = XYAxis(frame: axisFrame, textColor: UIColor.gray, resolutionMin: currentXResolution)
+
     }
     
-    func addCurve(name:String,data:[[String:Any]],resolutionInMin:Int,Yresolution:CGFloat,fillColor:UIColor,lineColor:UIColor)
+    func addCurve(name:String,data:[[String:Any]],fillColor:UIColor,lineColor:UIColor)
     {
  
         
-        geometric.initWith(pairs:data, size: curveSize.size,resolutionInMin:resolutionInMin, maxValue:Yresolution)
+        geometric.initWith(pairs:data, size: curveSize.size,resolutionInMin:currentXResolution, maxValue:CGFloat(currentYResolution))
         let finalPoints = geometric.getCurvePairsInPixels()
         
         //add curve

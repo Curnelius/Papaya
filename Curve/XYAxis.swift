@@ -17,34 +17,34 @@ class XYAxis: UIView {
     
     
     var labelColor:UIColor = UIColor.gray
-    var pairs = [[String:Any]]()
     var resolution:Int!
     let datesFilter = DatesFilter ()
     
     
     
     
-    init (frame : CGRect,data:[[String:Any]], textColor:UIColor, resolutionMin:Int)
+    init (frame : CGRect, textColor:UIColor, resolutionMin:Int)
     {
 
-       pairs=data
        labelColor=textColor
        resolution=resolutionMin
        super.init(frame : frame)
         
         
+       print( self.getTimeAxis())
  
         
     }
     
     
     
-    //**** do we need data() here ????????
+ 
     
-    
-    private func setAxis()
+    func getTimeAxis()->[String]
     {
-        print(getListOfDates())
+        
+      return datesFilter.getDatesAsStrings(forDates: getListOfDates(), andResolution: resolution)
+        
     }
     
     
@@ -56,14 +56,21 @@ class XYAxis: UIView {
         let openDate = datesFilter.getOpenTime(resolutionMin: resolution)
         finalDates.append(openDate)
         var nextDate = openDate
-        var timeDividerMinutes = getTimeDivider()
+        let timeDividerMinutes = getTimeDivider()
+        
+         
+        //run on each date from the first one, and add the timedivider to get array of dates
+        //stop when added date is larger than now
         //12 is max interval
         for _ in 0..<12
         {
            
            let newdate=datesFilter.getDateInterval(forDate: nextDate, minutes: timeDividerMinutes)
+ 
            if (!datesFilter.isDateLaterThanNow(withDate: newdate))
            {
+          
+          
             finalDates.append(newdate)
             nextDate=newdate
            }
@@ -71,7 +78,7 @@ class XYAxis: UIView {
            { return finalDates }
             
         }
-        
+ 
         return finalDates
  
         
@@ -86,15 +93,13 @@ class XYAxis: UIView {
         //1H / MINUTES
         if(resolution<=60){return resolution/defaultDistance}
         //1D
-        else if (resolution <= 60*12) { return 60}
-        //3D
-        else if (resolution <= 60*36) { return 60*12}
-        //5D
-        else if (resolution <= 60*60) { return 60*12}
+        else if (resolution <= 60*24) { return 120}
+        //3D, 5D
+        else if (resolution <= 60*24*5) { return 60*24}
         //1M
-        else if (resolution <= 60*12*31) { return 60*12*7}
+        else if (resolution <= 60*24*31) { return 60*24*7}
         //1Y
-        else if (resolution <= 60*12*31*12) { return 60*12*31}
+        else if (resolution <= 60*24*31*12) { return 60*24*31}
         
         
         return resolution/defaultDistance

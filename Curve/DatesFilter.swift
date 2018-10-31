@@ -58,12 +58,55 @@ class DatesFilter {
     }
     
     
-    func getOpenTime(resolutionMin:Int) ->Date
+    func getDatesAsStrings(forDates:[Date], andResolution:Int)->[String]
     {
-        let openDateForSpan = Date().addingTimeInterval(TimeInterval(-1.0*CGFloat(resolutionMin) * 60.0))
-        return openDateForSpan
+        
+        var stringsTimeArray = [String]()
+        for date in forDates
+        {
+            
+            let calendar = Calendar.current
+            let min = Calendar.current.component(.minute, from: date)
+            let hour = Calendar.current.component(.hour, from: date)
+            let day = Calendar.current.component(.weekday, from: date)
+            let month = Calendar.current.component(.day, from: date)
+            let weekdaySymbols = calendar.weekdaySymbols
+ 
+            
+            
+ 
+         
+            
+            //min
+            if (andResolution <= 60) { stringsTimeArray.append(String(format: "%d:%d", hour,min)) }
+            //day
+            else if (andResolution <= 60*24) { stringsTimeArray.append(String(format: "%d:00", hour)) }
+            //3-5 days
+            else if (andResolution <= 60*24*5) { stringsTimeArray.append(String(format: "%@", weekdaySymbols[day-1])) }
+            //month
+            else if (andResolution <= 60*24*31) { stringsTimeArray.append(String(format: "%d", month)) }
+            
+        }
+        
+        
+        return stringsTimeArray
+        
     }
     
+    
+    
+    
+    
+    //return first date for a certain resolution
+    func getOpenTime(resolutionMin:Int) ->Date
+    {
+        let calendar = Calendar.current
+        let openDateForSpan = calendar.date(byAdding: .minute, value:-1*resolutionMin  , to: Date())
+         return openDateForSpan!
+    }
+    
+    
+    //return interval for a date
     func getDateInterval(forDate:Date,minutes:Int)->Date
     {
         
@@ -73,6 +116,7 @@ class DatesFilter {
     
     func isDateLaterThanNow(withDate:Date)->Bool
     {
+ 
         if(withDate > Date()) {return true}
         else {return false }
     }
