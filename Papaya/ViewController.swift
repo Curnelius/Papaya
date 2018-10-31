@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         
         
         let w:CGFloat=0.95*view.frame.width
-        let h:CGFloat=w
+        let h:CGFloat=0.8*w
         
         
         //add curve
@@ -28,8 +28,7 @@ class ViewController: UIViewController {
         curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande", titleSize: 22, subtitleSize: 11)
         self.view.addSubview(curve)
 
-        //curve.addGraph(name: "sensor", points: [[0,0],[1,3],[2,5],[3,6],[5,5],[6,12]], lineColor: .black, fillColor: .red)
-        
+ 
         
         
         
@@ -45,28 +44,27 @@ class ViewController: UIViewController {
         let datesArray = [date6,date5,date4,date3,date2,date1]
         
         var pointsArray = [CGFloat]()
-        pointsArray.append(contentsOf: [0.0,1.0,2.0,3.0,4.0,5.0])
+        pointsArray.append(contentsOf: [5.0,2.0,4.0,3.0,8.0,3.0])
  
      
  
- 
+        
+        
+        let graphHeight = 0.8*curve.frame.height
+        let curveSize=CGRect(x:0, y:(curve.frame.height-graphHeight )/2.0, width:curve.frame.width, height: graphHeight)
+
+        
         //filter dates for scale
          let geometric = Geometric()
-         geometric.initWith(dates: datesArray, points: pointsArray, size: size.size)
+         geometric.initWith(dates: datesArray, values: pointsArray, size: curveSize.size,resolutionInMin:3, maxValue:0)
+         let finalPoints = geometric.getCurveValuesInPixels()
         
-        
-         
-        let xValues=geometric.getXValues(resolutionMin: 5)
-        let yValues=geometric.getYValues()
-        
-        
-        print(xValues)
-        print(yValues)
-        
+        //add curve
+        let graph = Graph(frame: curveSize,points:finalPoints,fillColor:UIColor.yellow,lineColor:UIColor.white)
+        curve.addSubview(graph)
+        graph.drawCurve()
  
- 
-   
-    
+        
         
      }
 

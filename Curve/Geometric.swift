@@ -16,68 +16,74 @@ class Geometric {
     var Gdates = [Date]()
     var Gpoints = [CGFloat]()
     var Gsize:CGSize!
+    var Gresolution:Int!
+    var GmaxValue:CGFloat!
     private let datesFilters = DatesFilter()
  
 
 
 
 
-    func initWith(dates:[Date],points:[CGFloat],size:CGSize)
+    func initWith(dates:[Date],values:[CGFloat],size:CGSize,resolutionInMin:Int,maxValue:CGFloat)
     {
         Gdates=dates
-        Gpoints=points
+        Gpoints=values
         Gsize=size
- 
-        
-    }
-
-
-    //map dates and values into the screen spacw (w/h)
-    func getPoints()->[[CGFloat]]
-    {
-        
-        return [[1,1]]
-       
+        Gresolution=resolutionInMin
+        GmaxValue=maxValue
+  
     }
     
-    func getXValues(resolutionMin:Int) -> [CGFloat]
+    func getCurveValuesInPixels()->[CGPoint]
     {
         
-        let relativeT=datesFilters.getRelativeTimes(resolutionMin: resolutionMin, withDates: Gdates)
+        var finalCurve = [CGPoint]()
+        
+        let x = getXValues()
+        let y = getYValues()
+        let minElements  = min(x.count, y.count)
+        
+      
+        for i in 0..<minElements
+        {
+            let point = CGPoint(x:x[i], y: y[i])
+            finalCurve.append(point)
+        }
+        return finalCurve
+    }
+
+ 
+    private func getXValues() -> [CGFloat]
+    {
+        let relativeT=datesFilters.getRelativeTimes(resolutionMin: Gresolution, withDates: Gdates)
         var TLocations = [CGFloat]()
         for fraction in relativeT
         {
             TLocations.append(fraction*Gsize.width)
         }
-        
         return TLocations
     }
     
-    func getYValues()->[CGFloat]
+    
+    private func getYValues()->[CGFloat]
     {
-        let min:CGFloat = Gpoints.min()!
-        let max:CGFloat = Gpoints.max()!
-        let span:CGFloat = max-min
+        
+        var max:CGFloat = Gpoints.max()!
+        GmaxValue == 0 ? (max=max) : (max=GmaxValue)
+        
+        let span:CGFloat = max
         var Vlocations = [CGFloat]()
+        
         for value in Gpoints
         {
-            Vlocations.append((value/span)*Gsize.height)
+            let fvalue=(value/span)*Gsize.height //measured from top down
+            Vlocations.append(fvalue)
         }
         return Vlocations
     }
 
 
  
-
-
-
-
-
-
-
-
-
-
 
 
 

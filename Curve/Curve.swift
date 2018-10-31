@@ -36,13 +36,7 @@ class Curve: UIView {
         
     }
     
-    func addGraph(name:String,points:[CGFloat:CGFloat],lineColor:UIColor,fillColor:UIColor)
-    {
-        let graph = Graph(lineColor: lineColor, fillColor: fillColor, size: CGSize(width: frame.width, height: frame.height/2.0))
-        graphs.append([name:graph])
-        self.addSubview(graph)
-    }
-    
+   
     
     
     
