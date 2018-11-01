@@ -10,6 +10,12 @@ import Foundation
 import UIKit
 
 
+
+//get x points
+//run on data pairs of dates and values
+//for each date (only inside the span defined by resolution) get his relative position on screen
+//then get this date's value also as relative point in screen
+
 class Geometric {
 
 
@@ -17,18 +23,20 @@ class Geometric {
     var Gsize:CGSize!
     var Gresolution:Int!
     var GmaxValue:CGFloat!
+    var endDate:Date!
     private let datesFilters = DatesFilter()
  
 
 
 
 
-    func initWith(pairs:[[String:Any]],size:CGSize,resolutionInMin:Int,maxValue:CGFloat)
+    func initWith(pairs:[[String:Any]],size:CGSize,resolutionInMin:Int,maxValue:CGFloat, lastDate:Date)
     {
         dataPairs=pairs
         Gsize=size
         Gresolution=resolutionInMin
         GmaxValue=maxValue
+        endDate=lastDate
   
     }
     
@@ -46,7 +54,7 @@ class Geometric {
             
             //get a number that present a date relative position to our span, so 11am is 0.5 in a  10-12am span.
             // -1 means the date is outside the span and will not be counted
-            let relativeTime = datesFilters.getRelativeTime(resolutionMin: Gresolution, withDate: date)
+            let relativeTime = datesFilters.getRelativeTime(resolutionMin: Gresolution, withDate: date, endDate: endDate)
             if(relativeTime != -1 )
             {
                 let x = getXValue(relativeT: relativeTime)

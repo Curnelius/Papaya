@@ -16,7 +16,8 @@ class Curve: UIView {
     private var graphs = [[String:UIView]]()
     private var curveSize:CGRect!
     private  let geometric = Geometric()
-    private let currentXResolution:Int = 10
+    private let maxXAxisValues = 12
+    private let currentXResolution:Int = 60*48 // in min, must be multiply of maxXAxisValues
     private let currentYResolution:Int = 0
 
  
@@ -56,15 +57,15 @@ class Curve: UIView {
         
         //add axis
         let axisFrame=CGRect(x: 0, y: graphHeight-bottomSpace, width: frame.width, height: bottomSpace)
-        let axis = XYAxis(frame: axisFrame, textColor: UIColor.gray, resolutionMin: currentXResolution)
-
+        let axis = XYAxis(frame: axisFrame, textColor: UIColor.gray, resolutionMin: currentXResolution, maxValuesForXAxis: maxXAxisValues)
+        print(axis.getTimeAxis())
     }
     
     func addCurve(name:String,data:[[String:Any]],fillColor:UIColor,lineColor:UIColor)
     {
  
         
-        geometric.initWith(pairs:data, size: curveSize.size,resolutionInMin:currentXResolution, maxValue:CGFloat(currentYResolution))
+        geometric.initWith(pairs:data, size: curveSize.size,resolutionInMin:currentXResolution, maxValue:CGFloat(currentYResolution), lastDate: Date())
         let finalPoints = geometric.getCurvePairsInPixels()
         
         //add curve
