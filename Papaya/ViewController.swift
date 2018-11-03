@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         
        //fake data
         var data = [[String:Any]]()
-        let dateCount=10
+        let dateCount=90
         
         for i in 0..<dateCount
         {
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
             
             //value
             let sinus = CGFloat(i)/10.0
-            let random:CGFloat =  1.0+CGFloat(arc4random()%20)//   CGFloat(  Double(sin(sinus)) * Double.pi / 180   ) //1.0+CGFloat(arc4random()%20)
+            let random:CGFloat =  1.0+CGFloat(arc4random()%100)//   CGFloat(  Double(sin(sinus)) * Double.pi / 180   ) //1.0+CGFloat(arc4random()%20)
  
             
             //add
@@ -52,23 +52,19 @@ class ViewController: UIViewController {
 
         
   
-        
  
- 
-
         //add curve view (not curve)
         let size = CGRect(x: 10, y: 50, width: w, height: h)
         let curve = Curve(frame: size)
-        curve.curveTitles.setTitles(titleName: "Sensor Garden", subtitleName: "Under the garden tree")
+        curve.curveTitles.setTitles(titleName: "Garden Sensor", subtitleName: "Under The Garden Tree")
         curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande", titleSize: 22, subtitleSize: 11)
         self.view.addSubview(curve)
 
-        curve.addCurve(name: "main", data: data, fillColor:UIColor(red: 255.0/255.0, green:255.0/255.0, blue:100.0/255.0, alpha: 1.0),lineColor:UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 0.5)  )
+        curve.addCurve(name: "main", data: data, fillColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),lineColor:UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 0.5)  )
  
 
  
-        print(data)
-       
+ 
   
         
 

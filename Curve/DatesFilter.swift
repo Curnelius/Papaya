@@ -90,7 +90,7 @@ class DatesFilter {
             //day
             else if (resolution <= 60*24) {dateFormatter.dateFormat = "HH:mm"}
             //3-5 days
-            else if (resolution <= 60*24*5) { dateFormatter.dateFormat = "EEEE"   }
+            else if (resolution <= 60*24*5) { dateFormatter.dateFormat = "EEE"   }
             //month
             else if (resolution <= 60*24*31) { dateFormatter.dateFormat = "dd.MM" }
             //year
@@ -161,7 +161,7 @@ class DatesFilter {
         //1H / MINUTES
         if(resolution<=60){return resolution/defaultDistance}
             //1D
-        else if (resolution <= 60*24) { return 120}
+        else if (resolution <= 60*24) { return 60*4}
             //3D, 5D
         else if (resolution <= 60*24*5) { return 60*24}
             //1M

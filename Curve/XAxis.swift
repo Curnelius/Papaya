@@ -60,7 +60,7 @@ class XAxis: UIView {
     func updateXaxis(xAxis:[[String:CGFloat]])
     {
         
- 
+       removeAll()
         
         
         //add x
@@ -71,7 +71,7 @@ class XAxis: UIView {
             let locationOnScreen = location*frame.size.width
             
             
-            let label = UILabel(frame: CGRect(x: locationOnScreen, y:frame.size.height-axisHeight, width: frame.width/12.0, height: axisHeight))
+            let label = UILabel(frame: CGRect(x: locationOnScreen, y:frame.size.height-axisHeight, width: frame.width/10.0, height: axisHeight))
             label.text=dateString
             label.font=UIFont(name: defaultFont, size: 10)
             label.textAlignment = .center

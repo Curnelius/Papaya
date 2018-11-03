@@ -25,7 +25,7 @@ class Graph: UIView {
     
     private var displayLink: CADisplayLink?
     private var startTime = 0.0
-    private var animLength = 2.5
+    private var animLength = 1.5
  
  
     
@@ -42,8 +42,8 @@ class Graph: UIView {
         
  
         shapeLayer.fillColor =  curveFillColor!.cgColor
-        shapeLayer.strokeColor = curveLineColor!.cgColor
-        shapeLayer.lineWidth = 2.0
+        shapeLayer.strokeColor = curveFillColor!.cgColor
+        shapeLayer.lineWidth = 6.0
         shapeLayer.lineJoin = CAShapeLayerLineJoin.round
         shapeLayer.lineCap = CAShapeLayerLineCap.round
         shapeLayer.strokeStart = 0
