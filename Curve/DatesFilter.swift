@@ -15,23 +15,7 @@ class DatesFilter {
     
     
     
-    //returns all dates inside the requested period (e.g 60 minutes)
-    func getDatesForLast(minutes:Int, withDates:[Date])->[Date]
-    {
-        var sortDates = [Date]()
-        
-        for localDate  in withDates
-        {
-            let date:Date = localDate
-            let currentDate = Date()
-            let delta:Int = currentDate.minutes(from: localDate)
-            if( delta <= minutes){ sortDates.append(date)}
-        }
-        return sortDates
-    }
-    
-    
-    
+ 
     
     
     
@@ -43,7 +27,7 @@ class DatesFilter {
     
     
     //return  numbers 0-1 which relative to the whole time span, so  for 8-10am, 9am is 0.5
-    func getRelativeTime(resolutionMin:Int,withDate:Date, endDate:Date)->CGFloat
+    func getRelativeTime(resolutionMin:Int,withDate:Date, endDate:Date, maxXValues:Int)->CGFloat
     {
         //calculate in seconds resolution
         
@@ -51,7 +35,7 @@ class DatesFilter {
      
   
      
-        let delta:Int = withDate.seconds(from: self.getOpenTime(resolutionMin: resolutionMin, endDate: endDate)) //extension used
+        let delta:Int = withDate.seconds(from: self.getOpenTime(resolutionMin: resolutionMin, endDate: endDate, maxXValues:maxXValues)) //extension used
             
             if ( delta >= 0 )
             {
@@ -67,60 +51,7 @@ class DatesFilter {
     }
     
     
-    
-    //**!!!
-    func getDatesAsStrings(forDates:[Date], andResolution:Int, maxXAxisValues:Int)->[String]
-    {
-        
-        
-        
-        var stringsTimeArray = [String]()
-        for date in forDates
-        {
-            
-            let calendar = Calendar.current
-            let min = Calendar.current.component(.minute, from: date)
-            var hour = Calendar.current.component(.hour, from: date)
-            let day = Calendar.current.component(.weekday, from: date)
-            let month = Calendar.current.component(.day, from: date)
-            let weekdaySymbols = calendar.weekdaySymbols
- 
-            //round up minutes only multiplies of 5
-            let minMultiplies:Int = andResolution/maxXAxisValues
-            var rounded:Int = (min+minMultiplies-1)/minMultiplies*minMultiplies
-            if(rounded==60){
-                rounded=0
-                hour+=1
-                if(hour == 23){ hour = 0}
-            }
-            
-            //minutes string digit
-            var minuteString = String(format: "%d", rounded)
-            if (rounded<10){minuteString = String(format: "0%d", rounded)}
-            
-            
-            
- 
-            
-            //min
-            if (andResolution <= 60) { stringsTimeArray.append(String(format: "%d:%@", hour,minuteString)) }
-            //day
-            else if (andResolution <= 60*24) { stringsTimeArray.append(String(format: "%d:00", hour)) }
-            //3-5 days
-            else if (andResolution <= 60*24*5) { stringsTimeArray.append(String(format: "%@", weekdaySymbols[day-1])) }
-            //month
-            else if (andResolution <= 60*24*31) { stringsTimeArray.append(String(format: "%d", month)) }
-            
-        }
-        
-        
-        return stringsTimeArray
-        
-    }
-    
-    
-    
-    
+
     
     
     
@@ -131,22 +62,74 @@ class DatesFilter {
     
     
     
-    //get  list of dates by resolution , time divider, and number of values to show on axis (with rounded minutes)
+    //1. get pairs of a string date and a relative location inside the span(resolution)
+    func getStringDateAndLocation(endDate:Date, resolution:Int, maximumValues:Int)->[[String:CGFloat]]
+    {
+        
+        var finalArray = [[String:CGFloat]]()
+        
+        for date in self.getListOfRoundedDates(endDate: endDate, resolution: resolution, maximumValues: maximumValues)
+        {
+            
+            //get date string
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
+            dateFormatter.locale = Locale.init(identifier: "en_US_POSIX")
+            dateFormatter.dateFormat = "HH:mm"
+           
+   
+           // let calendar = Calendar.current
+           // let day = Calendar.current.component(.weekday, from: date)
+            //let weekdaySymbols = calendar.weekdaySymbols
+            //String(format: "%@", weekdaySymbols[day-1])
+            
+
+            
+            //min
+            if (resolution <= 60) { dateFormatter.dateFormat = "HH:mm"}
+            //day
+            else if (resolution <= 60*24) {dateFormatter.dateFormat = "HH:mm"}
+            //3-5 days
+            else if (resolution <= 60*24*5) { dateFormatter.dateFormat = "EEEE"   }
+            //month
+            else if (resolution <= 60*24*31) { dateFormatter.dateFormat = "dd.MM" }
+            //year
+            else if (resolution <= 60*24*31*12) { dateFormatter.dateFormat = "MMMM" }
+ 
+ 
+            let dateString = dateFormatter.string(from: date)
+            
+            //get date location on screen
+            let relativeTime=self.getRelativeTime(resolutionMin: resolution, withDate: date, endDate: endDate, maxXValues: maximumValues)
+            
+
+            finalArray.append([dateString:relativeTime])
+        }
+        
+        
+        return finalArray
+        
+    }
+    
+    
+    
+    
+    //2. get list of dates by resolution , time divider, and number of values to show on axis (with rounded minutes)
     func getListOfRoundedDates(endDate:Date, resolution:Int, maximumValues:Int)->[Date]
     {
         
         
         var finalDates = [Date]()
-        let openDate = self.getOpenTime(resolutionMin: resolution,endDate: endDate)
+        let openDate = self.getOpenTime(resolutionMin: resolution,endDate: endDate, maxXValues:maximumValues )
         var nextDate = openDate
         let timeDividerMinutes = getTimeDivider(resolution:resolution, maximumValues:maximumValues)
         
-        
+ 
         //run on each date from the first one, and add the timedivider to get array of dates
         //add relevant dates when they are rounded by minute - to final array
         //stop when added date is larger than now
        
-         finalDates.append(self.getRoundedDate(date: openDate, resolution: resolution, maxXValues: maximumValues))
+         finalDates.append(openDate)
         
         for _ in 0..<maximumValues-1
         {
@@ -170,7 +153,7 @@ class DatesFilter {
     }
     
     
-    //every how many minutes - we  jump (show a label) since the starting date of the resolution to end date
+    //2(1) every how many minutes - we  jump (show a label) since the starting date of the resolution to end date
     func getTimeDivider(resolution:Int, maximumValues:Int)->Int
     {
         let defaultDistance:Int = maximumValues
@@ -192,7 +175,7 @@ class DatesFilter {
     
 
     
-    //round a date's minutes by our resolution and maximum labels allowed to show
+    //2(2) round down a date's minutes by our resolution and maximum labels allowed to show
     func getRoundedDate(date:Date,resolution:Int, maxXValues:Int)->Date
     {
         //round up the minutes by relationship between resolution(span) and number of values to show
@@ -205,15 +188,13 @@ class DatesFilter {
         //read components to calculate the rounding
         let min = Calendar.current.component(.minute, from: date)
         let hour = Calendar.current.component(.hour, from: date)
-        let rounded:Int = (min+roundMinutesBy-1)/roundMinutesBy*roundMinutesBy
-        var setHours:Int = hour
+        let rounded:Int = (min)/roundMinutesBy*roundMinutesBy //(min+roundMinutesBy-1)/roundMinutesBy*roundMinutesBy
         var setMin:Int = rounded
 
-        if(rounded >= 60) { setMin = 0; setHours+=rounded/60 }
-        if(setHours >= 24) {setHours = (hour+rounded/60)-24 }
+        if(rounded >= 60) { setMin = 0  }
 
         
-        return Calendar.current.date(bySettingHour:setHours, minute: setMin, second: 0, of: date)!
+        return Calendar.current.date(bySettingHour:hour, minute: setMin, second: 0, of: date)!
         
        
    
@@ -222,48 +203,22 @@ class DatesFilter {
     }
     
     
+ 
     
     
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //general
+    //**general
     
     
     //return first date for a certain resolution
-    func getOpenTime(resolutionMin:Int, endDate:Date) ->Date
+    func getOpenTime(resolutionMin:Int, endDate:Date, maxXValues:Int) ->Date
     {
         let calendar = Calendar.current
-        let openDateForSpan = calendar.date(byAdding: .minute, value:-1*resolutionMin  , to: endDate)
-         return openDateForSpan!
+        let openDateForSpan:Date = calendar.date(byAdding: .minute, value:-1*resolutionMin  , to: endDate)!
+        return self.getRoundedDate(date: openDateForSpan, resolution: resolutionMin, maxXValues: maxXValues)
+ 
     }
     
     

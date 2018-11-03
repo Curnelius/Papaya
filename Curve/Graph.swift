@@ -20,7 +20,12 @@ class Graph: UIView {
     var curveFillColor:UIColor?
     var size:CGSize?
     var curvePoints = [CGPoint]()
+    private let shapeLayer = CAShapeLayer()
     
+    
+    private var displayLink: CADisplayLink?
+    private var startTime = 0.0
+    private var animLength = 2.5
  
  
     
@@ -35,65 +40,133 @@ class Graph: UIView {
         size=frame.size
         
         
+ 
+        shapeLayer.fillColor =  curveFillColor!.cgColor
+        shapeLayer.strokeColor = curveLineColor!.cgColor
+        shapeLayer.lineWidth = 2.0
+        shapeLayer.lineJoin = CAShapeLayerLineJoin.round
+        shapeLayer.lineCap = CAShapeLayerLineCap.round
+        shapeLayer.strokeStart = 0
+        self.layer.addSublayer(shapeLayer)
+        
+        
+        
+        
+        
     }
     
     
-    func drawCurve()
+    
+    
+    
+    
+    //display link
+    
+    
+    
+    func createClock() {
+        
+        stopDisplayLink()
+        startTime = CACurrentMediaTime() // reset start time
+        
+        // create displayLink & add it to the run-loop
+        let displayLink = CADisplayLink(
+            target: self, selector: #selector(displayLinkDidFire)
+        )
+        displayLink.add(to: .current, forMode: .default)
+                        
+        self.displayLink = displayLink
+    }
+    
+
+    
+    @objc func displayLinkDidFire(_ displayLink: CADisplayLink) {
+        
+        var elapsed = CACurrentMediaTime() - startTime
+        
+        if elapsed > animLength {
+            stopDisplayLink()
+            elapsed = animLength // clamp the elapsed time to the anim length
+        }
+        
+        drawCurve(height: CGFloat(elapsed/animLength))
+       
+    }
+    
+
+    func stopDisplayLink() {
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func startDrawingCurve(duration:Float)
+    {
+        animLength=Double(duration)
+        createClock()
+    }
+    
+    
+    
+    
+    
+    
+    //draw height gradually
+    func drawCurve(height:CGFloat)
     {
         
          let path = UIBezierPath()
          var point1:CGPoint!
          var point2:CGPoint!
-         //var smoothData = self.smooth(alpha: 0.1)
+         //var smoothData = self.smooth(alpha: 0.4)
         
+ 
          for i in 0..<curvePoints.count-1
          {
-            point1 = curvePoints[i]
-            point2 = curvePoints[i+1]
+                point1 =  curvePoints[i]
+                point2 = curvePoints[i+1]
             
-            point1.y=size!.height-point1.y
-            point2.y=size!.height-point2.y
+               // 1. draw height slowly up 2. change drawing y - screen default start from top
+                point1.y = (size!.height-height*point1.y)
+                point2.y = (size!.height-height*point2.y)
+
             
-            
-            
-           
             if( i == 0 ) {path.move(to: point1)}
             
             path.addLine(to: point2)
- 
-            
-            
-  
 
-         }
+          }
+        
         
         //close the path if we have a fill
         if(curveFillColor != UIColor.clear)
         {
-            path.addLine(to: CGPoint(x: point2.x, y: frame.height))
-            path.addLine(to: CGPoint(x:curvePoints[0].x, y: frame.height))
-            //path.addLine(to: firstpoint)
-            //path.close()
+        
+              path.addLine(to: CGPoint(x: point2.x, y: frame.height))
+              path.addLine(to: CGPoint(x:curvePoints[0].x, y: frame.height))
+              path.addLine(to: CGPoint(x:curvePoints[0].x, y: size!.height-height*curvePoints[0].y))
+
         }
-        
-     
-        
-        
-        let shapeLayer = CAShapeLayer()
-        //shapeLayer.frame=CGRect(x: 0, y: 0, width: (size?.width)!, height: size!.height)
+ 
+  
         shapeLayer.path = path.cgPath
-        shapeLayer.fillColor = curveFillColor!.cgColor
-        shapeLayer.strokeColor = curveLineColor!.cgColor
-        shapeLayer.lineWidth = 2.0
-        shapeLayer.lineJoin = CAShapeLayerLineJoin.round
-        shapeLayer.lineCap = CAShapeLayerLineCap.round
-        shapeLayer.fillRule = .evenOdd
-        self.layer.addSublayer(shapeLayer)
-        
+      
+ 
+ 
+    
     }
     
     
-    
+ 
  
 
     func smooth(alpha:CGFloat)->[CGPoint]

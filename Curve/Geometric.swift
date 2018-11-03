@@ -24,22 +24,27 @@ class Geometric {
     var Gresolution:Int!
     var GmaxValue:CGFloat!
     var endDate:Date!
+    var GmaxXAxisValues:Int!
     private let datesFilters = DatesFilter()
  
 
 
 
 
-    func initWith(pairs:[[String:Any]],size:CGSize,resolutionInMin:Int,maxValue:CGFloat, lastDate:Date)
+    func initWith(pairs:[[String:Any]],size:CGSize,resolutionInMin:Int,maxValue:CGFloat, lastDate:Date, maxXAxisValues:Int)
     {
         dataPairs=pairs
         Gsize=size
         Gresolution=resolutionInMin
+        GmaxXAxisValues=maxXAxisValues
         GmaxValue=maxValue
         endDate=lastDate
   
     }
     
+    
+    
+    //for curve draw returns locations on screen of x and y points, without values (dates/yvalue)
     func getCurvePairsInPixels()->[CGPoint]
     {
         
@@ -54,7 +59,7 @@ class Geometric {
             
             //get a number that present a date relative position to our span, so 11am is 0.5 in a  10-12am span.
             // -1 means the date is outside the span and will not be counted
-            let relativeTime = datesFilters.getRelativeTime(resolutionMin: Gresolution, withDate: date, endDate: endDate)
+            let relativeTime = datesFilters.getRelativeTime(resolutionMin: Gresolution, withDate: date, endDate: endDate, maxXValues: GmaxXAxisValues)
             if(relativeTime != -1 )
             {
                 let x = getXValue(relativeT: relativeTime)
@@ -68,6 +73,29 @@ class Geometric {
         return finalCurve
 
  
+    }
+    
+    
+    //get yaxis real values and location
+    func getYAxisPairs()->[[CGFloat:CGFloat]]
+    {
+        let numYValues = 5
+        var pairsFinal = [[CGFloat:CGFloat]]()
+        let maximuma = self.getMaxValue()
+        let jumps = maximuma/CGFloat(numYValues)
+        let jumpsRounded = jumps/10.0*10.0 //jumps < 1 ? 0.1:
+        var lastPointOnScale:CGFloat=0.0
+        for _ in 0..<numYValues
+        {
+            let newPointOnScale=lastPointOnScale+jumpsRounded
+            let relatedPosition=(newPointOnScale/maximuma)
+            if (newPointOnScale<=maximuma) {
+                pairsFinal.append([newPointOnScale:relatedPosition])
+                lastPointOnScale=newPointOnScale
+            }
+        }
+        
+        return pairsFinal
     }
 
  
