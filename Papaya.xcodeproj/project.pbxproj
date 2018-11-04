@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2514437E218F5202003E8424 /* CurveMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2514437D218F5202003E8424 /* CurveMarker.swift */; };
 		2525B0782185A97B007025C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0772185A97B007025C2 /* AppDelegate.swift */; };
 		2525B07A2185A97B007025C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0792185A97B007025C2 /* ViewController.swift */; };
 		2525B07D2185A97B007025C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2525B07B2185A97B007025C2 /* Main.storyboard */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2514437D218F5202003E8424 /* CurveMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveMarker.swift; sourceTree = "<group>"; };
 		2525B0742185A97B007025C2 /* Papaya.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Papaya.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2525B0772185A97B007025C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2525B0792185A97B007025C2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				255004D52186E878003DF21D /* DateExtension.swift */,
 				255004DF218DA8A7003DF21D /* UIViewExtension.swift */,
 				255004E1218DAA84003DF21D /* ShadowView.swift */,
+				2514437D218F5202003E8424 /* CurveMarker.swift */,
 			);
 			path = Curve;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 				2525B07A2185A97B007025C2 /* ViewController.swift in Sources */,
 				255004D42186B94D003DF21D /* Geometric.swift in Sources */,
 				255004DE218D8DB9003DF21D /* ResolutionMenu.swift in Sources */,
+				2514437E218F5202003E8424 /* CurveMarker.swift in Sources */,
 				2525B0AD2185B853007025C2 /* ViewTemplate.swift in Sources */,
 				255004E0218DA8A7003DF21D /* UIViewExtension.swift in Sources */,
 				255004D82186F792003DF21D /* DatesFilter.swift in Sources */,

@@ -36,7 +36,7 @@ class ViewController: UIViewController {
         {
             //date
             let current = Date()
-            let date = current.addingTimeInterval(Double(-1 * (dateCount-i)) * 60.0)
+            let date = current.addingTimeInterval(Double(-2 * (dateCount-i)) * 60.0)
             
             //value
             let random:CGFloat =  1.0+CGFloat(arc4random()%100)//   CGFloat(  Double(sin(sinus)) * Double.pi / 180   ) //1.0+CGFloat(arc4random()%20)
@@ -45,19 +45,19 @@ class ViewController: UIViewController {
            //avv
          
             var av:CGFloat = 0
-            var count:CGFloat=0
+            var count:CGFloat=1
             for pair in data.reversed()
             {
                 let value:CGFloat=pair["value"] as! CGFloat
                 av=av+value
                 count+=1
-                if (count==30){break}
+                if (count==20){break}
               
             
             }
             av=av/count
  
-            
+ 
             
             //add
             var pair1 =  [String:Any]()
@@ -90,7 +90,7 @@ class ViewController: UIViewController {
         
   
         
-
+print(data)
  
         
         

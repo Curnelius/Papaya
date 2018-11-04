@@ -20,6 +20,7 @@ class Geometric {
 
 
     var dataPairs = [[String:Any]]()
+    var baseDataPairs = [[String:Any]]()
     var Gsize:CGSize!
     var Gresolution:Int!
     var GmaxValue:CGFloat!
@@ -31,7 +32,38 @@ class Geometric {
 
 
 
+ 
 
+    
+    func getPointOnPath(touch:CGPoint)->CGPoint
+    {
+        //set data for base graph
+        dataPairs=baseDataPairs
+        
+        //get pairs
+        let pairs = self.getCurvePairsInPixels()
+        
+        let touchX:CGFloat=touch.x
+        for index in 0..<pairs.count-1
+        {
+            
+            let point1=pairs[index]
+            let point2=pairs[index+1]
+            
+             if(touchX<point2.x && touchX>point1.x)
+             {
+                
+                let slope = (point2.y-point1.y)/(point2.x-point1.x)
+                let y = slope*(touchX-point1.x)+point1.y
+                return CGPoint(x: touchX, y: y)
+ 
+             }
+            
+            
+ 
+         }
+        return CGPoint(x: 0, y: 0)
+    }
 
     
     func getDatesLocationsPairs()->[[String:CGFloat]]

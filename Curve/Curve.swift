@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Curve: UIView,ResolutionMenuProtocol {
+class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
     
     
     
@@ -23,6 +23,7 @@ class Curve: UIView,ResolutionMenuProtocol {
     private let currentYResolution:Int = 0
     private var Xaxis:XAxis!
     private var Yaxis:YAxis!
+    private var marker:CurveMarker!
 
     
  
@@ -50,7 +51,7 @@ class Curve: UIView,ResolutionMenuProtocol {
         let graphHeight = 0.7 * ( frame.height-bottomSpace-titlesFrame.size.height )
         curveSize=CGRect(x:0, y:frame.height-bottomSpace-graphHeight, width:self.frame.width, height: graphHeight)
         let axisXFrame=CGRect(x: 0, y:frame.height-bottomSpace, width: frame.width, height: bottomSpace)
-        let axisYFrame=CGRect(x: 0, y:curveSize.origin.y, width: 2*bottomSpace, height: curveSize.height)
+        let axisYFrame=CGRect(x: 0, y:curveSize.origin.y, width: bottomSpace, height: curveSize.height)
         let menuWidth=0.5*frame.width
         let menuHeight=titlesFrame.height/2.0
         let menuframe=CGRect(x: frame.width-menuWidth, y:titlesFrame.maxY, width: menuWidth, height: menuHeight)
@@ -97,7 +98,7 @@ class Curve: UIView,ResolutionMenuProtocol {
         
  
         
-        
+ 
         
  
         
@@ -106,8 +107,15 @@ class Curve: UIView,ResolutionMenuProtocol {
     
     
     
+    func GraphDelegate(touched: CGPoint) {
+      
+        var finalPoint:CGPoint =  geometric.getPointOnPath(touch: touched)
+        finalPoint.y=curveSize.height-finalPoint.y
+
+        marker.center=finalPoint
+     }
     
-    
+  
     func ResolutionMenuDelegate(selected: String) {
         
         
@@ -122,6 +130,8 @@ class Curve: UIView,ResolutionMenuProtocol {
         else if (selected == resolutionMenuTitles[3]) {currentXResolution=60*24*3}
         //5D
         else if (selected == resolutionMenuTitles[4]) {currentXResolution=60*24*5}
+        //1M
+        else if (selected == resolutionMenuTitles[5]) {currentXResolution=60*24*31}
         
         
         geometric.Gresolution=currentXResolution
@@ -186,8 +196,20 @@ class Curve: UIView,ResolutionMenuProtocol {
         newGraph["animation"]=animation
         graphs.append(newGraph)
         
+        //set basic curve to geometric calculations
+        //add marker to first curve
+        if(graphs.count==1){
+            geometric.baseDataPairs=data
+            //marker
+            marker = CurveMarker(frame: CGRect(x: 0, y: 0, width: 5.0, height: 5.0))
+            marker.layer.zPosition=1000
+            newGraphView.addSubview(marker)
+ 
+        }
+        
         //update y axis , maximum value and curve locations will only be calculated according to first graph's data
         Yaxis.updateYaxis(yAxis: geometric.getYAxisPairs())
+        Yaxis.layer.zPosition=1000
         
         
         
@@ -200,6 +222,8 @@ class Curve: UIView,ResolutionMenuProtocol {
     private func addCurveView(data:[[String:Any]],fill:UIColor, line:UIColor,animation:String)->Graph
     {
         
+        
+        
         //update geometric
         geometric.dataPairs=data
         
@@ -207,8 +231,17 @@ class Curve: UIView,ResolutionMenuProtocol {
         let graph = Graph(frame: curveSize,points:geometric.getCurvePairsInPixels())
         graph.curveFillColor=fill
         graph.curveLineColor=line
+        graph.delegate=self
+        graph.order=graphs.count
         self.addSubview(graph)
-        graph.startDrawingCurve(duration: 2.0, animation:animation )
+        graph.startDrawingCurve(duration: 1.5, animation:animation )
+        
+     
+        
+   
+     
+
+        
         
         return graph
         
