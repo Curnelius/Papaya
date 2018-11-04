@@ -15,9 +15,7 @@ class Curve: UIView,ResolutionMenuProtocol {
     var curveTitles:CurveTitle!
     var resolutionMenuTitles = ["10M","1H","1D","3D","5D","1M"]
     var cornerRadius:CGFloat = 24.0
-    var dataPairs = [[String:Any]]()
-    var graphFill:UIColor!
-    private var graphs = [[String:UIView]]()
+    private var graphs = [[String:Any]]()
     private var curveSize:CGRect!
     private  let geometric = Geometric()
     private let maxXAxisValues = 6
@@ -45,62 +43,63 @@ class Curve: UIView,ResolutionMenuProtocol {
  
  
  
- 
+        //set  geometrics
+        
+        let titlesFrame=CGRect(x: 0, y: 0, width: self.frame.width, height: 0.175*self.frame.height)
+        let bottomSpace = 0.125*self.frame.height
+        let graphHeight = 0.7 * ( frame.height-bottomSpace-titlesFrame.size.height )
+        curveSize=CGRect(x:0, y:frame.height-bottomSpace-graphHeight, width:self.frame.width, height: graphHeight)
+        let axisXFrame=CGRect(x: 0, y:frame.height-bottomSpace, width: frame.width, height: bottomSpace)
+        let axisYFrame=CGRect(x: 0, y:curveSize.origin.y, width: 2*bottomSpace, height: curveSize.height)
+        let menuWidth=0.5*frame.width
+        let menuHeight=titlesFrame.height/2.0
+        let menuframe=CGRect(x: frame.width-menuWidth, y:titlesFrame.maxY, width: menuWidth, height: menuHeight)
+        
         
  
         
+        //set geometrics
         
+        geometric.Gsize=curveSize.size
+        geometric.Gresolution=currentXResolution
+        geometric.GmaxValue=CGFloat(currentYResolution)
+        geometric.GmaxXAxisValues=maxXAxisValues
+        geometric.endDate=Date()
         
         
         
         //add title
-        curveTitles = CurveTitle(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0.175*self.frame.height))
+        
+        curveTitles = CurveTitle(frame:titlesFrame  )
         self.addSubview(curveTitles)
         
         
+        //add menu
+        
+        let menu = ResolutionMenu(frame: menuframe, textColor: UIColor.black, font: "LucidaGrande", list: resolutionMenuTitles, selection: 0)
+        menu.delegate=self
+        self.addSubview(menu)
+ 
         
         
-        
-        
-        //set graph geometrics
-        let bottomSpace = 0.125*self.frame.height
-        let graphHeight = 0.7 * ( frame.height-bottomSpace-curveTitles.frame.size.height )
-        curveSize=CGRect(x:0, y:frame.height-bottomSpace-graphHeight, width:self.frame.width, height: graphHeight)
-        
-        
-        
-        
-        
-       
+      
         
         
         //add axises - now we add only dates which independent on data but on default resolution
-        let filter  = DatesFilter()
-        let dateLocationPairs = filter.getStringDateAndLocation(endDate: Date(), resolution: currentXResolution, maximumValues: maxXAxisValues)
-        let axisXFrame=CGRect(x: 0, y:frame.height-bottomSpace, width: frame.width, height: bottomSpace)
-        let axisYFrame=CGRect(x: 0, y:curveSize.origin.y, width: 2*bottomSpace, height: curveSize.height)
+        
         let axisLabelColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
-
         Xaxis = XAxis(frame: axisXFrame, textColor: axisLabelColor, font:"LucidaGrande", stripHeight: bottomSpace)
         Xaxis.backgroundColor=UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
-        Xaxis.updateXaxis(xAxis: dateLocationPairs)
-        self.addSubview(Xaxis)
-        
+        Xaxis.updateXaxis(xAxis: geometric.getDatesLocationsPairs())
         Yaxis = YAxis(frame: axisYFrame, textColor: axisLabelColor, font:"LucidaGrande", stripHeight: bottomSpace)
-         self.addSubview(Yaxis)
+        self.addSubview(Xaxis)
+        self.addSubview(Yaxis)
         
  
         
         
         
-        
-        //add menu
-        let menuWidth=0.5*frame.width
-        let menuHeight=curveTitles.frame.height/2.0
-        let menuframe=CGRect(x: frame.width-menuWidth, y:curveTitles.frame.maxY, width: menuWidth, height: menuHeight)
-        let menu = ResolutionMenu(frame: menuframe, textColor: UIColor.black, font: "LucidaGrande", list: resolutionMenuTitles, selection: 0)
-        menu.delegate=self
-        self.addSubview(menu)
+ 
         
         
      }
@@ -125,7 +124,13 @@ class Curve: UIView,ResolutionMenuProtocol {
         else if (selected == resolutionMenuTitles[4]) {currentXResolution=60*24*5}
         
         
-        updateCurve()
+        geometric.Gresolution=currentXResolution
+        
+        //update x axis
+        Xaxis.updateXaxis(xAxis: geometric.getDatesLocationsPairs())
+
+        
+        updateCurves()
     }
     
     
@@ -140,71 +145,78 @@ class Curve: UIView,ResolutionMenuProtocol {
     
     //*** curve
     
-    func updateCurve()
+    func updateCurves()
     {
-        for v in graphs{
-            let view =  Array(v.values)[0]
+        for i in 0..<graphs.count{
+            
+            var dic = graphs[i]
+            let view = dic["view"] as! Graph
+            let data = dic["data"] as! [[String:Any]]
+            let animation=dic["animation"] as! String
+            let fill = view.curveFillColor
+            let line = view.curveLineColor
+            
+            
+            //remove view
             view.removeFromSuperview()
-        }
+            //add new view
+            let newGraph = addCurveView(data:data, fill: fill!, line: line!, animation:animation )
+            //update graphs array
+            dic["view"]=newGraph
+            graphs[i]=dic
+
+           }
         
-        self.addCurve(name: "ran", data:dataPairs , fillColor:graphFill , lineColor: graphFill)
-    }
+     }
     
     
-    func addCurve(name:String,data:[[String:Any]],fillColor:UIColor,lineColor:UIColor)
+    func addCurve(name:String, data:[[String:Any]],fillColor:UIColor,lineColor:UIColor, animation:String)
     {
+   
  
-        dataPairs=data
-        graphFill=fillColor
-        
-        let filter  = DatesFilter()
-        let dateLocationPairs = filter.getStringDateAndLocation(endDate: Date(), resolution: currentXResolution, maximumValues: maxXAxisValues)
-        
-     
-        //update geometric
-        geometric.initWith(pairs:data, size: curveSize.size,resolutionInMin:currentXResolution, maxValue:CGFloat(currentYResolution), lastDate: Date(), maxXAxisValues:maxXAxisValues )
-        let finalPoints = geometric.getCurvePairsInPixels()
-        
         //add curve
-        let graph = Graph(frame: curveSize,points:finalPoints,fillColor:fillColor,lineColor:lineColor)
-        self.addSubview(graph)
-        graphs.append([name:graph])
-        graph.startDrawingCurve(duration: 1.0)
+        let newGraphView=addCurveView(data:data, fill: fillColor, line: lineColor,animation:animation )
         
-        //update x y axis 
+        
+        //add new curve to array
+        var newGraph = [String:Any]()
+        newGraph["view"]=newGraphView
+        newGraph["name"]=name
+        newGraph["data"]=data
+        newGraph["animation"]=animation
+        graphs.append(newGraph)
+        
+        //update y axis , maximum value and curve locations will only be calculated according to first graph's data
         Yaxis.updateYaxis(yAxis: geometric.getYAxisPairs())
-        Xaxis.updateXaxis(xAxis: dateLocationPairs)
+        
+        
+        
+ 
 
         
  
     }
     
-    
-    func removeCurve(name:String)
+    private func addCurveView(data:[[String:Any]],fill:UIColor, line:UIColor,animation:String)->Graph
     {
-       self.getGraphWithName(name: name).removeFromSuperview()
+        
+        //update geometric
+        geometric.dataPairs=data
+        
+        //add curve
+        let graph = Graph(frame: curveSize,points:geometric.getCurvePairsInPixels())
+        graph.curveFillColor=fill
+        graph.curveLineColor=line
+        self.addSubview(graph)
+        graph.startDrawingCurve(duration: 2.0, animation:animation )
+        
+        return graph
+        
     }
     
-    func bringCurveToFront(name:String)
-    {
-        let thiscurve:UIView = self.getGraphWithName(name: name)
-        self.bringSubviewToFront(thiscurve)
-    }
     
-    func getGraphWithName(name:String)->UIView
-    {
-        for dic in graphs
-        {
-            let graphName = Array(dic.keys)[0]
-            let graphView = Array(dic.values)[0]
-            if ( graphName == name) {
-                
-                return graphView
-            }
-        }
-        return UIView()
-    }
-    
+ 
+   
    
     
     

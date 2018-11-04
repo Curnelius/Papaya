@@ -29,6 +29,7 @@ class ViewController: UIViewController {
         
        //fake data
         var data = [[String:Any]]()
+        var data2 = [[String:Any]]()
         let dateCount=90
         
         for i in 0..<dateCount
@@ -38,15 +39,36 @@ class ViewController: UIViewController {
             let date = current.addingTimeInterval(Double(-1 * (dateCount-i)) * 60.0)
             
             //value
-            let sinus = CGFloat(i)/10.0
             let random:CGFloat =  1.0+CGFloat(arc4random()%100)//   CGFloat(  Double(sin(sinus)) * Double.pi / 180   ) //1.0+CGFloat(arc4random()%20)
  
             
+           //avv
+         
+            var av:CGFloat = 0
+            var count:CGFloat=0
+            for pair in data.reversed()
+            {
+                let value:CGFloat=pair["value"] as! CGFloat
+                av=av+value
+                count+=1
+                if (count==30){break}
+              
+            
+            }
+            av=av/count
+ 
+            
+            
             //add
-            var pair =  [String:Any]()
-            pair["date"]=date
-            pair["value"]=random
-            data.append(pair)
+            var pair1 =  [String:Any]()
+            pair1["date"]=date
+            pair1["value"]=random
+            data.append(pair1)
+            
+            var pair2 =  [String:Any]()
+            pair2["date"]=date
+            pair2["value"]=av
+            data2.append(pair2)
         
         }
 
@@ -60,11 +82,12 @@ class ViewController: UIViewController {
         curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande", titleSize: 22, subtitleSize: 11)
         self.view.addSubview(curve)
 
-        curve.addCurve(name: "main", data: data, fillColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),lineColor:UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 0.5)  )
+        curve.addCurve(name: "main", data: data, fillColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),lineColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),animation:"bottom" )
  
 
  
- 
+        curve.addCurve(name: "main", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left"   )
+        
   
         
 

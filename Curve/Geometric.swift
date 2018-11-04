@@ -25,23 +25,20 @@ class Geometric {
     var GmaxValue:CGFloat!
     var endDate:Date!
     var GmaxXAxisValues:Int!
+    var persistanceMaxValueInData:CGFloat = 0
     private let datesFilters = DatesFilter()
- 
+    private let filter  = DatesFilter()
 
 
 
 
-    func initWith(pairs:[[String:Any]],size:CGSize,resolutionInMin:Int,maxValue:CGFloat, lastDate:Date, maxXAxisValues:Int)
-    {
-        dataPairs=pairs
-        Gsize=size
-        Gresolution=resolutionInMin
-        GmaxXAxisValues=maxXAxisValues
-        GmaxValue=maxValue
-        endDate=lastDate
-  
-    }
+
     
+    func getDatesLocationsPairs()->[[String:CGFloat]]
+    {
+        return  filter.getStringDateAndLocation(endDate: Date(), resolution: Gresolution, maximumValues: GmaxXAxisValues)
+
+    }
     
     
     //for curve draw returns locations on screen of x and y points, without values (dates/yvalue)
@@ -94,11 +91,18 @@ class Geometric {
                 lastPointOnScale=newPointOnScale
             }
         }
-        
+         
         return pairsFinal
     }
 
  
+    
+    
+    
+    
+    
+    
+    
     private func getXValue(relativeT:CGFloat) -> CGFloat
     {
         return relativeT*Gsize.width
@@ -117,10 +121,14 @@ class Geometric {
 
     
  
-    func getMaxValue()->CGFloat
+    private func getMaxValue()->CGFloat
     {
+        //calculate maximum value only once in a life time. any added graph will be drawn relative to this scale
+        //do not recalculate according to a new datapair. First data pair determine our Y scale.
+        if(persistanceMaxValueInData != 0 ) {return persistanceMaxValueInData}
         
         let maxValue = dataPairs.map { $0["value"] as! CGFloat }.max()!
+        persistanceMaxValueInData=maxValue
         return maxValue
 
 

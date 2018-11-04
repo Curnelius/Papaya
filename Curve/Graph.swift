@@ -30,10 +30,9 @@ class Graph: UIView {
  
     
     
-    init (frame : CGRect,points:[CGPoint], fillColor:UIColor,lineColor:UIColor)
+    init (frame : CGRect,points:[CGPoint])
     {
-        curveLineColor=lineColor
-        curveFillColor=fillColor
+
         curvePoints=points
         super.init(frame : frame)
         self.backgroundColor=UIColor.clear
@@ -41,8 +40,6 @@ class Graph: UIView {
         
         
  
-        shapeLayer.fillColor =  curveFillColor!.cgColor
-        shapeLayer.strokeColor = curveFillColor!.cgColor
         shapeLayer.lineWidth = 6.0
         shapeLayer.lineJoin = CAShapeLayerLineJoin.round
         shapeLayer.lineCap = CAShapeLayerLineCap.round
@@ -109,14 +106,41 @@ class Graph: UIView {
     
     
     
-    func startDrawingCurve(duration:Float)
+    func startDrawingCurve(duration:Float,animation:String)
     {
+        
+        shapeLayer.fillColor =  curveFillColor!.cgColor
+        shapeLayer.strokeColor = curveLineColor!.cgColor
+        
+        if(animation == "left")
+        {
+            self.drawFromLeft(duration: duration)
+            return
+        }
+
+
         animLength=Double(duration)
         createClock()
     }
     
     
     
+    func drawFromLeft(duration:Float)
+    {
+        
+        //no fill
+        shapeLayer.fillColor =  UIColor.clear.cgColor
+        shapeLayer.lineWidth=2.0
+        
+        //set the path for maximum height
+        drawCurve(height: 1.0)
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.duration = Double(duration)
+        shapeLayer.add(animation, forKey: "MyAnimation")
+    }
     
     
     
@@ -164,6 +188,8 @@ class Graph: UIView {
  
     
     }
+    
+    
     
     
  
