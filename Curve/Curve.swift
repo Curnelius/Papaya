@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
+class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
     
     
     
@@ -24,6 +24,8 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
     private var Xaxis:XAxis!
     private var Yaxis:YAxis!
     private var marker:CurveMarker!
+    private var touchView:TouchView!
+    private var viewOnTop=0
 
     
  
@@ -46,7 +48,7 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
  
         //set  geometrics
         
-        let titlesFrame=CGRect(x: 0, y: 0, width: self.frame.width, height: 0.175*self.frame.height)
+        let titlesFrame=CGRect(x: 0, y: 0, width: self.frame.width, height: 0.185*self.frame.height)
         let bottomSpace = 0.125*self.frame.height
         let graphHeight = 0.7 * ( frame.height-bottomSpace-titlesFrame.size.height )
         curveSize=CGRect(x:0, y:frame.height-bottomSpace-graphHeight, width:self.frame.width, height: graphHeight)
@@ -77,7 +79,7 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
         
         //add menu
         
-        let menu = ResolutionMenu(frame: menuframe, textColor: UIColor.black, font: "LucidaGrande", list: resolutionMenuTitles, selection: 0)
+        let menu = ResolutionMenu(frame: menuframe, textColor: UIColor.black, font: "LucidaGrande-Bold", list: resolutionMenuTitles, selection: 0)
         menu.delegate=self
         self.addSubview(menu)
  
@@ -88,7 +90,7 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
         
         //add axises - now we add only dates which independent on data but on default resolution
         
-        let axisLabelColor = UIColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1.0)
+        let axisLabelColor = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0)
         Xaxis = XAxis(frame: axisXFrame, textColor: axisLabelColor, font:"LucidaGrande", stripHeight: bottomSpace)
         Xaxis.backgroundColor=UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
         Xaxis.updateXaxis(xAxis: geometric.getDatesLocationsPairs())
@@ -97,23 +99,76 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
         self.addSubview(Yaxis)
         
  
+        //get touches
+        touchView = TouchView(frame: curveSize)
+        touchView.delegate=self
+        touchView.isUserInteractionEnabled=true
+        self.addSubview(touchView)
         
  
+        //marker
+        marker = CurveMarker(frame: CGRect(x: -5.0, y: 0, width: 5.0, height: 5.0))
+        touchView.addSubview(marker)
+        
         
  
+    
         
         
      }
     
     
     
-    func GraphDelegate(touched: CGPoint) {
+    //touch moved delegate - move marker
+    func TouchViewDelegate(touched: CGPoint) {
       
-        var finalPoint:CGPoint =  geometric.getPointOnPath(touch: touched)
+        //show marker
+        marker.isHidden=false
+        
+        let pointDic = geometric.getPointOnPath(touch: touched)
+        var finalPoint:CGPoint =  pointDic["pointOnScreen"] as! CGPoint
+        let isOnGraph = pointDic["isPointOnCurve"] as! Bool
+        let value = pointDic["value"] as! CGFloat
+        let date = pointDic["date"] as! Date
+        
         finalPoint.y=curveSize.height-finalPoint.y
 
+        //set marker
         marker.center=finalPoint
+        isOnGraph ? marker.mark():marker.unmark()
+        
+      
+        let datefilter = DatesFilter()
+        let stringDate = datefilter.getDateAsString(forDate: date, resolution: currentXResolution)
+        curveTitles.subtitle.text = String(format: "%.2f, at %@", value,stringDate)
+    
      }
+    
+    
+
+    
+    //tap delegate - bring to front
+    func TouchViewDelegateTap() {
+        
+        
+        var orderToGet=viewOnTop+1
+        if(orderToGet==graphs.count){orderToGet=0}
+        
+        //find next view to bring to front
+        //view.order is constant,"viewOnTop" changes to indicate who is showing
+        for i in 0..<graphs.count{
+            var dic = graphs[i]
+            let name = dic["name"] as! String
+            if(i==orderToGet){self.bringGraphToFront(name: name)}
+        }
+ 
+        
+    }
+    func TouchViewDelegateBeginEnd(state: String) {
+        if(state=="begin"){}
+        else{marker.isHidden=true}
+    }
+ 
     
   
     func ResolutionMenuDelegate(selected: String) {
@@ -161,7 +216,9 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
             
             var dic = graphs[i]
             let view = dic["view"] as! Graph
+            let viewOrder=view.order
             let data = dic["data"] as! [[String:Any]]
+            let name = dic["name"] as! String
             let animation=dic["animation"] as! String
             let fill = view.curveFillColor
             let line = view.curveLineColor
@@ -170,23 +227,28 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
             //remove view
             view.removeFromSuperview()
             //add new view
-            let newGraph = addCurveView(data:data, fill: fill!, line: line!, animation:animation )
+            let newGraph = addCurveView(name:name,data:data, fill: fill!, line: line!, animation:animation )
+            //bring back order number to graph
+            newGraph.order=viewOrder
             //update graphs array
             dic["view"]=newGraph
             graphs[i]=dic
+            //update z's
+            bringGraphToFront(name: name)
 
            }
         
      }
     
     
-    func addCurve(name:String, data:[[String:Any]],fillColor:UIColor,lineColor:UIColor, animation:String)
+    func addNewCurve(name:String, data:[[String:Any]],fillColor:UIColor,lineColor:UIColor, animation:String)
     {
    
  
         //add curve
-        let newGraphView=addCurveView(data:data, fill: fillColor, line: lineColor,animation:animation )
-        
+        let newGraphView=addCurveView(name:name,data:data, fill: fillColor, line: lineColor,animation:animation )
+        newGraphView.order=graphs.count
+ 
         
         //add new curve to array
         var newGraph = [String:Any]()
@@ -195,17 +257,9 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
         newGraph["data"]=data
         newGraph["animation"]=animation
         graphs.append(newGraph)
+
         
-        //set basic curve to geometric calculations
-        //add marker to first curve
-        if(graphs.count==1){
-            geometric.baseDataPairs=data
-            //marker
-            marker = CurveMarker(frame: CGRect(x: 0, y: 0, width: 5.0, height: 5.0))
-            marker.layer.zPosition=1000
-            newGraphView.addSubview(marker)
- 
-        }
+         bringGraphToFront(name: name)
         
         //update y axis , maximum value and curve locations will only be calculated according to first graph's data
         Yaxis.updateYaxis(yAxis: geometric.getYAxisPairs())
@@ -219,11 +273,9 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
  
     }
     
-    private func addCurveView(data:[[String:Any]],fill:UIColor, line:UIColor,animation:String)->Graph
+    private func addCurveView(name:String,data:[[String:Any]],fill:UIColor, line:UIColor,animation:String)->Graph
     {
-        
-        
-        
+
         //update geometric
         geometric.dataPairs=data
         
@@ -231,18 +283,12 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
         let graph = Graph(frame: curveSize,points:geometric.getCurvePairsInPixels())
         graph.curveFillColor=fill
         graph.curveLineColor=line
-        graph.delegate=self
-        graph.order=graphs.count
         self.addSubview(graph)
+        
+        
+        
         graph.startDrawingCurve(duration: 1.5, animation:animation )
-        
-     
-        
-   
-     
 
-        
-        
         return graph
         
     }
@@ -250,6 +296,39 @@ class Curve: UIView,ResolutionMenuProtocol,GraphProtocol {
     
  
    
+    
+    func bringGraphToFront(name:String)
+    {
+        
+        for i in 0..<graphs.count{
+            
+            var dic = graphs[i]
+            let view = dic["view"] as! Graph
+            let graphName = dic["name"] as! String
+            let data = dic["data"] as! [[String:Any]]
+            
+            if(graphName==name)
+            {
+              //bring graph to front to front
+              self.bringSubviewToFront(view)
+              //bring touch to front
+              self.bringSubviewToFront(touchView)
+             
+                
+            //update reference
+            viewOnTop=view.order
+              
+              //set current data
+              geometric.dataPairs=data
+              //setup final pixels pairs to let indicator run on top curve
+              geometric.CurvePairsInPixels = geometric.getCurvePairsInPixels()
+              return
+            }
+
+        }
+        
+        
+    }
    
     
     

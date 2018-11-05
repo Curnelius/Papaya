@@ -20,7 +20,7 @@ class Geometric {
 
 
     var dataPairs = [[String:Any]]()
-    var baseDataPairs = [[String:Any]]()
+    var CurvePairsInPixels = [CGPoint]()
     var Gsize:CGSize!
     var Gresolution:Int!
     var GmaxValue:CGFloat!
@@ -32,16 +32,20 @@ class Geometric {
 
 
 
+    
+ 
  
 
     
-    func getPointOnPath(touch:CGPoint)->CGPoint
+    func getPointOnPath(touch:CGPoint)->[String:Any]
     {
-        //set data for base graph
-        dataPairs=baseDataPairs
+
+    
+        var pointDic = [String:Any]()
+        
         
         //get pairs
-        let pairs = self.getCurvePairsInPixels()
+        let pairs = CurvePairsInPixels
         
         let touchX:CGFloat=touch.x
         for index in 0..<pairs.count-1
@@ -50,19 +54,26 @@ class Geometric {
             let point1=pairs[index]
             let point2=pairs[index+1]
             
-             if(touchX<point2.x && touchX>point1.x)
+             if(touchX<=point2.x && touchX>point1.x)
              {
                 
                 let slope = (point2.y-point1.y)/(point2.x-point1.x)
                 let y = slope*(touchX-point1.x)+point1.y
-                return CGPoint(x: touchX, y: y)
- 
+                let p = CGPoint(x: touchX, y: y)
+                
+                pointDic["pointOnScreen"]=p
+                pointDic["value"]=getMaxValue()*(y)/Gsize.height
+                pointDic["isPointOnCurve"] = false
+                pointDic["date"]=self.getDateForPoint(point: p)
+                if(abs(touchX-point2.x)<1 || abs(touchX-point1.x)<1) { pointDic["isPointOnCurve"] = true }
+                
+                return pointDic
+
              }
-            
-            
  
          }
-        return CGPoint(x: 0, y: 0)
+        return pointDic
+ 
     }
 
     
@@ -131,6 +142,15 @@ class Geometric {
     
     
     
+    
+    private func getDateForPoint(point:CGPoint)->Date
+    {
+       let relativeWidth = point.x/Gsize.width
+       let relativeSpan = relativeWidth*CGFloat(Gresolution)
+       let openDate=datesFilters.getOpenTime(resolutionMin: Gresolution, endDate: endDate, maxXValues: GmaxXAxisValues)
+        let date = datesFilters.getDateInterval(forDate: openDate, minutes: Int(relativeSpan))
+        return date
+    }
     
     
     

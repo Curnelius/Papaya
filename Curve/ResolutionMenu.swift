@@ -52,7 +52,7 @@ class ResolutionMenu: UIView {
             button.backgroundColor = .clear
             button.setTitle(string, for: .normal)
             button.addTarget(self, action:#selector(self.buttonClicked), for: .touchUpInside)
-            button.titleLabel?.font=UIFont(name: defaultFont, size: 12)
+            button.titleLabel?.font=UIFont(name: defaultFont, size: 10)
             button.setTitleColor(labelColor, for: .normal)
             button.tag=Int(count)
             self.addSubview(button)
@@ -63,8 +63,8 @@ class ResolutionMenu: UIView {
         
         
         selected = UIView(frame: CGRect(x: size/4.0, y: frame.height-2.0, width: size/2.0, height: 2.0))
-        selected.backgroundColor=UIColor.red
-        selected.layer.cornerRadius=2.0
+        selected.backgroundColor=UIColor.black
+        selected.layer.cornerRadius=3.0
         self.addSubview(selected)
         
  

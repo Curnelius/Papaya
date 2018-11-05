@@ -76,21 +76,20 @@ class ViewController: UIViewController {
   
  
         //add curve view (not curve)
-        let size = CGRect(x: 10, y: 50, width: w, height: h)
+        let size = CGRect(x: 10, y: 80, width: w, height: h)
         let curve = Curve(frame: size)
-        curve.curveTitles.setTitles(titleName: "Garden Sensor", subtitleName: "Under The Garden Tree")
-        curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande", titleSize: 22, subtitleSize: 11)
+        curve.curveTitles.setTitles(titleName: "Garden Sensor", subtitleName: "")
+        curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande", titleSize: 22, subtitleSize: 13)
         self.view.addSubview(curve)
 
-        curve.addCurve(name: "main", data: data, fillColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),lineColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),animation:"bottom" )
+        curve.addNewCurve(name: "main", data: data, fillColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 0.8),lineColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),animation:"bottom" )
  
 
  
-        curve.addCurve(name: "main", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left"   )
+        curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left"   )
         
   
         
-print(data)
  
         
         

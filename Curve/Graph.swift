@@ -9,14 +9,7 @@
 import UIKit
 
 
-
-
-protocol GraphProtocol : class {
-    
-    func GraphDelegate(touched:CGPoint )
-    
-}
-
+ 
 
 
 
@@ -35,8 +28,7 @@ class Graph: UIView {
     private var startTime = 0.0
     private var animLength = 1.5
  
-    var delegate:GraphProtocol! = nil
-
+ 
     
     
     init (frame : CGRect,points:[CGPoint])
@@ -49,7 +41,7 @@ class Graph: UIView {
         
         
  
-        shapeLayer.lineWidth = 4.0
+        shapeLayer.lineWidth = 2.0
         shapeLayer.lineJoin = CAShapeLayerLineJoin.round
         shapeLayer.lineCap = CAShapeLayerLineCap.round
         shapeLayer.strokeStart = 0
@@ -228,35 +220,7 @@ class Graph: UIView {
     
     
     
-    
-    
-    //only the top graph will detect/inform on touches
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
  
- 
-        
-        if let theTouch = touches.first {
-            let startPoint = theTouch.location(in: self)
-            self.delegate.GraphDelegate(touched: startPoint)
-            
-        }
-    }
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
- 
-        
-        if let theTouch = touches.first {
-            let startPoint = theTouch.location(in: self)
-            self.delegate.GraphDelegate(touched: startPoint)
-
-            
-            
-        }
-    }
-
-    
-    
     
   
     

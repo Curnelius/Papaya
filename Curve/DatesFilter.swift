@@ -71,33 +71,8 @@ class DatesFilter {
         for date in self.getListOfRoundedDates(endDate: endDate, resolution: resolution, maximumValues: maximumValues)
         {
             
-            //get date string
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
-            dateFormatter.locale = Locale.init(identifier: "en_US_POSIX")
-            dateFormatter.dateFormat = "HH:mm"
-           
-   
-           // let calendar = Calendar.current
-           // let day = Calendar.current.component(.weekday, from: date)
-            //let weekdaySymbols = calendar.weekdaySymbols
-            //String(format: "%@", weekdaySymbols[day-1])
             
-
-            
-            //min
-            if (resolution <= 60) { dateFormatter.dateFormat = "HH:mm"}
-            //day
-            else if (resolution <= 60*24) {dateFormatter.dateFormat = "HH:mm"}
-            //3-5 days
-            else if (resolution <= 60*24*5) { dateFormatter.dateFormat = "EEE"   }
-            //month
-            else if (resolution <= 60*24*31) { dateFormatter.dateFormat = "dd.MM" }
-            //year
-            else if (resolution <= 60*24*31*12) { dateFormatter.dateFormat = "MMMM" }
- 
- 
-            let dateString = dateFormatter.string(from: date)
+            let dateString = getDateAsString(forDate: date, resolution: resolution)
             
             //get date location on screen
             let relativeTime=self.getRelativeTime(resolutionMin: resolution, withDate: date, endDate: endDate, maxXValues: maximumValues)
@@ -210,6 +185,36 @@ class DatesFilter {
     
     
     //**general
+    
+    
+    
+    func getDateAsString(forDate:Date, resolution:Int)->String
+    {
+        
+        //get date string
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
+        dateFormatter.locale = Locale.init(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "HH:mm"
+        
+        
+        
+        //min
+        if (resolution <= 60) { dateFormatter.dateFormat = "HH:mm"}
+            //day
+        else if (resolution <= 60*24) {dateFormatter.dateFormat = "HH:mm"}
+            //3-5 days
+        else if (resolution <= 60*24*5) { dateFormatter.dateFormat = "EEE"   }
+            //month
+        else if (resolution <= 60*24*31) { dateFormatter.dateFormat = "dd.MM" }
+            //year
+        else if (resolution <= 60*24*31*12) { dateFormatter.dateFormat = "MMMM" }
+        
+        
+        let dateString = dateFormatter.string(from: forDate)
+        return dateString
+
+    }
     
     
     //return first date for a certain resolution
