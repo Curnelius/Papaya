@@ -166,7 +166,10 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
     }
     func TouchViewDelegateBeginEnd(state: String) {
         if(state=="begin"){}
-        else{marker.isHidden=true}
+        else{
+            marker.isHidden=true
+            curveTitles.subtitle.text=""
+        }
     }
  
     

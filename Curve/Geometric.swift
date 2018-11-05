@@ -54,6 +54,7 @@ class Geometric {
             let point1=pairs[index]
             let point2=pairs[index+1]
             
+            //touch on line between 2 points
              if(touchX<=point2.x && touchX>point1.x)
              {
                 
@@ -72,6 +73,11 @@ class Geometric {
              }
  
          }
+        pointDic["pointOnScreen"]=CGPoint(x: -1.0, y: -1.0)
+        pointDic["value"]=CGFloat(0)
+        pointDic["isPointOnCurve"] = false
+        pointDic["date"]=self.getDateForPoint(point: CGPoint(x: touchX, y: 0.0))
+        
         return pointDic
  
     }
