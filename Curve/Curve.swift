@@ -90,11 +90,11 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
         
         //add axises - now we add only dates which independent on data but on default resolution
         
-        let axisLabelColor = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0)
-        Xaxis = XAxis(frame: axisXFrame, textColor: axisLabelColor, font:"LucidaGrande", stripHeight: bottomSpace)
+        let axisLabelColor = UIColor(red: 0.65, green: 0.65, blue: 0.65, alpha: 1.0)
+        Xaxis = XAxis(frame: axisXFrame, textColor: axisLabelColor, font:"LucidaGrande")
         Xaxis.backgroundColor=UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
         Xaxis.updateXaxis(xAxis: geometric.getDatesLocationsPairs())
-        Yaxis = YAxis(frame: axisYFrame, textColor: axisLabelColor, font:"LucidaGrande", stripHeight: bottomSpace)
+        Yaxis = YAxis(frame: axisYFrame, textColor: axisLabelColor, font:"LucidaGrande" )
         self.addSubview(Xaxis)
         self.addSubview(Yaxis)
         
@@ -107,7 +107,7 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
         
  
         //marker
-        marker = CurveMarker(frame: CGRect(x: -5.0, y: 0, width: 5.0, height: 5.0))
+        marker = CurveMarker(frame: CGRect(x: -20.0, y: 0, width: 8.0, height: 8.0))
         touchView.addSubview(marker)
         
         
@@ -135,7 +135,18 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
 
         //set marker
         marker.center=finalPoint
-        isOnGraph ? marker.mark():marker.unmark()
+        marker.unmark()
+        
+        if(isOnGraph)
+        {
+            marker.mark()
+            curveTitles.subtitle.textColor=UIColor.red
+        }
+        else
+        {
+            marker.unmark()
+            curveTitles.subtitle.textColor=UIColor.black
+        }
         
       
         let datefilter = DatesFilter()
@@ -191,8 +202,10 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
         //1M
         else if (selected == resolutionMenuTitles[5]) {currentXResolution=60*24*31}
         
-        
+        //new resolution
         geometric.Gresolution=currentXResolution
+        //update date to draw curve related to the right date
+        geometric.endDate=Date()
         
         //update x axis
         Xaxis.updateXaxis(xAxis: geometric.getDatesLocationsPairs())
@@ -248,6 +261,7 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
     {
    
  
+        
         //add curve
         let newGraphView=addCurveView(name:name,data:data, fill: fillColor, line: lineColor,animation:animation )
         newGraphView.order=graphs.count
@@ -266,8 +280,7 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
         
         //update y axis , maximum value and curve locations will only be calculated according to first graph's data
         Yaxis.updateYaxis(yAxis: geometric.getYAxisPairs())
-        Yaxis.layer.zPosition=1000
-        
+ 
         
         
  
@@ -278,9 +291,12 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
     
     private func addCurveView(name:String,data:[[String:Any]],fill:UIColor, line:UIColor,animation:String)->Graph
     {
-
-        //update geometric
+        
+ 
         geometric.dataPairs=data
+        
+
+
         
         //add curve
         let graph = Graph(frame: curveSize,points:geometric.getCurvePairsInPixels())
@@ -335,7 +351,7 @@ class Curve: UIView,ResolutionMenuProtocol,TouchViewProtocol {
    
     
     
-    
+   
     
     
     

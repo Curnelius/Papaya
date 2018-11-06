@@ -29,20 +29,18 @@ class XAxis: UIView {
     var labelColor:UIColor = UIColor.gray
     let datesFilter = DatesFilter ()
     var defaultFont = "Avenir-Light"
-    var axisHeight:CGFloat!
 
     
     
     
     
     
-    init (frame : CGRect, textColor:UIColor,font:String, stripHeight:CGFloat)
+    init (frame : CGRect, textColor:UIColor,font:String)
     {
  
         
        labelColor=textColor
        defaultFont=font
-        axisHeight=stripHeight
         
  
        super.init(frame : frame)
@@ -69,45 +67,24 @@ class XAxis: UIView {
             let dateString = Array(pair.keys)[0]
             let location = Array(pair.values)[0]
             let locationOnScreen = location*frame.size.width
+            let labelWidth=frame.width/10.0
             
-            
-            let label = UILabel(frame: CGRect(x: locationOnScreen, y:frame.size.height-axisHeight, width: frame.width/10.0, height: axisHeight))
+            let label = UILabel(frame: CGRect(x: locationOnScreen-labelWidth/2.0, y:0, width: labelWidth, height: frame.size.height))
             label.text=dateString
             label.font=UIFont(name: defaultFont, size: 10)
             label.textAlignment = .center
             label.textColor=labelColor
             if (locationOnScreen>=0){self.addSubview(label)}
+            
+            let line = UIView(frame: CGRect(x: label.frame.midX-1.0, y: 0, width: 1.0, height: 4.0))
+            line.backgroundColor=label.textColor
+            self.addSubview(line)
  
         }
     }
     
     
-    //get array of y values, no strings
-    func updateYaxis(yAxis:[[CGFloat:CGFloat]])
-    {
-        
-        removeAll()
- 
-        //add x
-        for pair in yAxis
-        {
-            let value = Array(pair.keys)[0]
-            let location = Array(pair.values)[0]
-            let locationOnScreen = location*frame.size.height
-            let startY=frame.height-axisHeight-axisHeight
-            
-            let label = UILabel(frame: CGRect(x: 0, y:startY + locationOnScreen, width: frame.width/8.0, height: axisHeight))
-            label.text=String(format: "%f", value)
-            label.font=UIFont(name: defaultFont, size: 10)
-            label.textAlignment = .left
-            label.textColor=labelColor
-            self.addSubview(label)
-        }
-
-            
-       
-    }
- 
+   
    
     
     

@@ -19,10 +19,13 @@ class CurveMarker: UIView {
         
         super.init(frame : frame)
         
+        self.backgroundColor=UIColor.clear
         markFrame=CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         marker = UIView(frame:markFrame  )
         marker.layer.cornerRadius=frame.width/2.0
-        marker.backgroundColor=UIColor.red
+        marker.backgroundColor=UIColor.black
+        marker.layer.borderColor=UIColor.white.cgColor
+        marker.layer.borderWidth=1.5
         self.addSubview(marker)
     }
     
@@ -31,18 +34,20 @@ class CurveMarker: UIView {
     func mark()
     {
         var frm:CGRect = markFrame as CGRect
-        frm.size.width = frm.size.width*1.5
-        frm.size.height = frm.size.height*1.5
+        frm.size.width = frm.size.width*1.25
+        frm.size.height = frm.size.height*1.25
         marker.frame=frm
         marker.layer.cornerRadius=frm.size.width/2.0
         marker.center=CGPoint(x: markFrame.midX, y: markFrame.midY)
-        marker.backgroundColor=UIColor.gray
+        marker.backgroundColor=UIColor.red
     }
     
     func unmark()
     {
         marker.frame=markFrame
-        marker.backgroundColor=UIColor.red
+        marker.layer.borderColor=UIColor.white.cgColor
+        marker.backgroundColor=UIColor.black
+
 
     }
     

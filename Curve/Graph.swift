@@ -39,9 +39,9 @@ class Graph: UIView {
         self.backgroundColor=UIColor.clear
         size=frame.size
         
-        
+      
  
-        shapeLayer.lineWidth = 2.0
+        shapeLayer.lineWidth = 1.5
         shapeLayer.lineJoin = CAShapeLayerLineJoin.round
         shapeLayer.lineCap = CAShapeLayerLineCap.round
         shapeLayer.strokeStart = 0
@@ -149,12 +149,23 @@ class Graph: UIView {
     func drawCurve(height:CGFloat)
     {
         
+        //less than 2 points
+        if (curvePoints.count<2){ return }
+  
+        
          let path = UIBezierPath()
          var point1:CGPoint!
          var point2:CGPoint!
          //var smoothData = self.smooth(alpha: 0.4)
         
+        
  
+       
+       
+        
+        
+        
+        
          for i in 0..<curvePoints.count-1
          {
                 point1 =  curvePoints[i]

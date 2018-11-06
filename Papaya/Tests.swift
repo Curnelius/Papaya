@@ -39,7 +39,7 @@ class Tests {
             
          
         }
-        
+        print(data.last)
         return data
 
     }
@@ -71,8 +71,7 @@ class Tests {
                 
             }
             av=av/count
-            print(av)
-            
+ 
             var pair2 =  [String:Any]()
             pair2["date"]=data[i]["date"]
             pair2["value"]=av

@@ -31,27 +31,28 @@ class ViewController: UIViewController {
         var data = [[String:Any]]()
         var data2 = [[String:Any]]()
        let test = Tests()
-       data=test.getSingleSetOfData(intervals: 2, numberElements: 90, max: 500)
+       data=test.getSingleSetOfData(intervals: 20, numberElements: 90, max: 500)
        data2=test.getAverageForData(data: data, parameter: 10)
 
  
-        
+ 
   
  
         //add curve view (not curve)
         let size = CGRect(x: 10, y: 80, width: w, height: h)
         let curve = Curve(frame: size)
         curve.curveTitles.setTitles(titleName: "Garden Sensor", subtitleName: "")
-        curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande-Bold", titleSize: 22, subtitleSize: 13)
+        curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande-Bold", titleSize: 22, subtitleSize: 14)
         self.view.addSubview(curve)
 
         curve.addNewCurve(name: "main", data: data, fillColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 0.8),lineColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),animation:"bottom" )
  
 
  
-        curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left"   )
+        //curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left"   )
         
-  
+        curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor(red: 40.0/255.0, green:200.0/255.0, blue:180.0/255.0, alpha: 0.8),lineColor:UIColor(red: 40.0/255.0, green:200.0/255.0, blue:180.0/255.0, alpha: 1.0),animation:"bottom" )
+        
         
  
         

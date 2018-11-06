@@ -14,19 +14,17 @@ class YAxis: UIView {
     var labelColor:UIColor = UIColor.gray
     let datesFilter = DatesFilter ()
     var defaultFont = "Avenir-Light"
-    var axisHeight:CGFloat!
-
+ 
     
     
     
-    init (frame : CGRect, textColor:UIColor,font:String, stripHeight:CGFloat)
+    init (frame : CGRect, textColor:UIColor,font:String )
     {
         
         
         labelColor=textColor
         defaultFont=font
-        axisHeight=stripHeight
-        
+ 
         
         
         
@@ -58,7 +56,7 @@ class YAxis: UIView {
             let location = Array(pair.values)[0]
             let locationOnScreen = frame.size.height - (location*frame.size.height)
             
-            let label = UILabel(frame: CGRect(x: 0.1*frame.width, y: locationOnScreen, width: frame.width, height: axisHeight))
+            let label = UILabel(frame: CGRect(x: 0.1*frame.width, y: locationOnScreen, width: frame.width, height:  frame.width))
             if ( value < 1) { label.text=String(format: "%.3f", value)}
             else{ label.text=String(format: "%.1f", value)}
             label.center.y=locationOnScreen

@@ -46,6 +46,7 @@ class Geometric {
         
         //get pairs
         let pairs = CurvePairsInPixels
+        let lockPrecentage:CGFloat=10.0
         
         let touchX:CGFloat=touch.x
         for index in 0..<pairs.count-1
@@ -54,19 +55,28 @@ class Geometric {
             let point1=pairs[index]
             let point2=pairs[index+1]
             
+            
             //touch on line between 2 points
-             if(touchX<=point2.x && touchX>point1.x)
+             if(touchX<point2.x && touchX>point1.x)
              {
                 
                 let slope = (point2.y-point1.y)/(point2.x-point1.x)
                 let y = slope*(touchX-point1.x)+point1.y
-                let p = CGPoint(x: touchX, y: y)
+                var p = CGPoint(x: touchX, y: y)
+                
+                //locking mechanism
+                let distance1 = sqrt (  (p.x-point1.x)*(p.x-point1.x)+(p.y-point1.y)*(p.y-point1.y) )
+                let distance2 = sqrt (  (p.x-point2.x)*(p.x-point2.x)+(p.y-point2.y)*(p.y-point2.y) )
+                let lineLen =   distance1+distance2
+                if(distance1<lockPrecentage*lineLen/100.0){p=point1}
+                else if(distance2<lockPrecentage*lineLen/100.0){p=point2}
+
                 
                 pointDic["pointOnScreen"]=p
-                pointDic["value"]=getMaxValue()*(y)/Gsize.height
+                pointDic["value"]=getMaxValue()*(p.y)/Gsize.height
                 pointDic["isPointOnCurve"] = false
                 pointDic["date"]=self.getDateForPoint(point: p)
-                if(abs(touchX-point2.x)<1 || abs(touchX-point1.x)<1) { pointDic["isPointOnCurve"] = true }
+                if( p==point1 || p==point2) { pointDic["isPointOnCurve"] = true }
                 
                 return pointDic
 
@@ -114,12 +124,20 @@ class Geometric {
                 finalCurve.append(point)
             }
         }
+        //handle single point
+        if (finalCurve.count==1)
+        {
+            finalCurve.append(finalCurve[0])
+            finalCurve[0]=CGPoint(x: 0, y: 0 )
+        }
         
         
         return finalCurve
 
  
     }
+    
+    
     
     
     //get yaxis real values and location

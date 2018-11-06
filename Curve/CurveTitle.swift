@@ -46,6 +46,8 @@ class CurveTitle: UIView {
         subtitle.textAlignment = .left
         subtitle.text=subtitleDefault
         subtitle.font=UIFont(name: subtitleDefaultFont, size: 12.0)
+        subtitle.textColor=UIColor.black
+
         self.addSubview(subtitle)
         
  
