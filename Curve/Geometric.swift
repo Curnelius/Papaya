@@ -16,6 +16,11 @@ import UIKit
 //for each date (only inside the span defined by resolution) get his relative position on screen
 //then get this date's value also as relative point in screen
 
+
+ 
+
+
+
 class Geometric {
 
 
@@ -37,18 +42,24 @@ class Geometric {
  
 
     
-    func getPointOnPath(touch:CGPoint)->[String:Any]
+    func getPointOnPath(touch:CGPoint)->MovingPoint
     {
 
     
-        var pointDic = [String:Any]()
+        var movingP:MovingPoint
         
-        
+       
         //get pairs
         let pairs = CurvePairsInPixels
         let lockPrecentage:CGFloat=10.0
-        
         let touchX:CGFloat=touch.x
+        
+        
+        //no points
+        movingP=MovingPoint.init(pointOnScreen:CGPoint(x: -50.0, y: -50.0), value:CGFloat(0), isPointOnCurve: false, date:getDateForPoint(point: CGPoint(x: touchX, y: 0.0)))
+        
+        if (pairs.count==0){return movingP}
+        
         for index in 0..<pairs.count-1
         {
             
@@ -72,23 +83,26 @@ class Geometric {
                 else if(distance2<lockPrecentage*lineLen/100.0){p=point2}
 
                 
-                pointDic["pointOnScreen"]=p
-                pointDic["value"]=getMaxValue()*(p.y)/Gsize.height
-                pointDic["isPointOnCurve"] = false
-                pointDic["date"]=self.getDateForPoint(point: p)
-                if( p==point1 || p==point2) { pointDic["isPointOnCurve"] = true }
+                movingP=MovingPoint.init(pointOnScreen: p, value: getMaxValue()*(p.y)/Gsize.height, isPointOnCurve: false, date: self.getDateForPoint(point: p))
                 
-                return pointDic
+                
+              
+ 
+                if( p==point1 || p==point2) {movingP.isPointOnCurve=true }
+                
+                return movingP
 
              }
  
          }
-        pointDic["pointOnScreen"]=CGPoint(x: -1.0, y: -1.0)
-        pointDic["value"]=CGFloat(0)
-        pointDic["isPointOnCurve"] = false
-        pointDic["date"]=self.getDateForPoint(point: CGPoint(x: touchX, y: 0.0))
         
-        return pointDic
+        
+
+
+  
+ 
+        
+        return movingP
  
     }
 

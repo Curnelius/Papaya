@@ -21,19 +21,14 @@ class ViewController: UIViewController {
         let h:CGFloat=0.8*w
         
         
-        
-        
-        
-        
-        
-        
-       //fake data
-        var data = [[String:Any]]()
-        var data2 = [[String:Any]]()
+       //Get fake data:(
+       var data = [[String:Any]]()
+       var data2 = [[String:Any]]()
+       var data3 = [[String:Any]]()
        let test = Tests()
        data=test.getSingleSetOfData(intervals: 20, numberElements: 90, max: 500)
        data2=test.getAverageForData(data: data, parameter: 10)
-
+       data3=test.getSingleSetOfData(intervals: 50, numberElements: 90, max: 500)
  
  
   
@@ -41,21 +36,26 @@ class ViewController: UIViewController {
         //add curve view (not curve)
         let size = CGRect(x: 10, y: 80, width: w, height: h)
         let curve = Curve(frame: size)
-        curve.curveTitles.setTitles(titleName: "Garden Sensor", subtitleName: "")
-        curve.curveTitles.setFonts(titleFont: "LucidaGrande-Bold", subtitleFont: "LucidaGrande-Bold", titleSize: 22, subtitleSize: 14)
         self.view.addSubview(curve)
+        
 
-        curve.addNewCurve(name: "main", data: data, fillColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 0.8),lineColor:UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0),animation:"bottom" )
- 
+        
+        curve.title="Garden Sensor"
+        curve.font="LucidaGrande-Bold"
+        
+        let orangeColor=UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 0.8)
+        let orangeLine=UIColor(red: 253.0/255.0, green:173.0/255.0, blue:76.0/255.0, alpha: 1.0)
+        let blueColor=UIColor(red: 40.0/255.0, green:200.0/255.0, blue:180.0/255.0, alpha: 0.8)
+        let blueLine=UIColor(red: 40.0/255.0, green:200.0/255.0, blue:180.0/255.0, alpha: 1.0)
+        let yellowColor=UIColor(red: 253.0/255.0, green:255.0/255.0, blue:76.0/255.0, alpha: 0.8)
 
+
+        curve.addNewCurve(name: "Garden", data: data, fillColor:orangeColor ,lineColor:orangeLine ,animation:"bottom" )
+        curve.addNewCurve(name: "Average", data: data2, fillColor:blueColor,lineColor:blueLine ,animation:"bottom" )
+        curve.addNewCurve(name: "Sex", data: data3, fillColor:yellowColor,lineColor:yellowColor ,animation:"bottom" )
+
+        //curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left" )
  
-        //curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left"   )
-        
-        curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor(red: 40.0/255.0, green:200.0/255.0, blue:180.0/255.0, alpha: 0.8),lineColor:UIColor(red: 40.0/255.0, green:200.0/255.0, blue:180.0/255.0, alpha: 1.0),animation:"bottom" )
-        
-        
- 
-        
         
      }
 

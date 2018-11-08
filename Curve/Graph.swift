@@ -26,7 +26,7 @@ class Graph: UIView {
     
     private var displayLink: CADisplayLink?
     private var startTime = 0.0
-    private var animLength = 1.5
+    private var animLength = 1.0
  
  
     
@@ -113,6 +113,8 @@ class Graph: UIView {
         shapeLayer.fillColor =  curveFillColor!.cgColor
         shapeLayer.strokeColor = curveLineColor!.cgColor
         
+        animLength=Double(duration)
+        
         if(animation == "left")
         {
             self.drawFromLeft(duration: duration)
@@ -120,7 +122,7 @@ class Graph: UIView {
         }
 
 
-        animLength=Double(duration)
+        
         createClock()
     }
     

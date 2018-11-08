@@ -10,6 +10,12 @@
 		2514437E218F5202003E8424 /* CurveMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2514437D218F5202003E8424 /* CurveMarker.swift */; };
 		25144380218FEAA3003E8424 /* TouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2514437F218FEAA3003E8424 /* TouchView.swift */; };
 		251443822190697C003E8424 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251443812190697C003E8424 /* Tests.swift */; };
+		2514438421929319003E8424 /* GraphBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2514438321929319003E8424 /* GraphBubble.swift */; };
+		251443862192D488003E8424 /* CurveContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 251443852192D488003E8424 /* CurveContainer.swift */; };
+		2514438821940EE8003E8424 /* Dimentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2514438721940EE8003E8424 /* Dimentions.swift */; };
+		2514438A21941C5A003E8424 /* Resolutions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2514438921941C5A003E8424 /* Resolutions.swift */; };
+		2514438C21942615003E8424 /* CurrentGraphsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2514438B21942615003E8424 /* CurrentGraphsList.swift */; };
+		2514438E21943D34003E8424 /* MovingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2514438D21943D34003E8424 /* MovingPoint.swift */; };
 		2525B0782185A97B007025C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0772185A97B007025C2 /* AppDelegate.swift */; };
 		2525B07A2185A97B007025C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2525B0792185A97B007025C2 /* ViewController.swift */; };
 		2525B07D2185A97B007025C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2525B07B2185A97B007025C2 /* Main.storyboard */; };
@@ -30,8 +36,6 @@
 		255004DA21899480003DF21D /* XAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D921899480003DF21D /* XAxis.swift */; };
 		255004DC218D7DA6003DF21D /* YAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004DB218D7DA6003DF21D /* YAxis.swift */; };
 		255004DE218D8DB9003DF21D /* ResolutionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004DD218D8DB9003DF21D /* ResolutionMenu.swift */; };
-		255004E0218DA8A7003DF21D /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004DF218DA8A7003DF21D /* UIViewExtension.swift */; };
-		255004E2218DAA84003DF21D /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004E1218DAA84003DF21D /* ShadowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,12 @@
 		2514437D218F5202003E8424 /* CurveMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveMarker.swift; sourceTree = "<group>"; };
 		2514437F218FEAA3003E8424 /* TouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchView.swift; sourceTree = "<group>"; };
 		251443812190697C003E8424 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		2514438321929319003E8424 /* GraphBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBubble.swift; sourceTree = "<group>"; };
+		251443852192D488003E8424 /* CurveContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveContainer.swift; sourceTree = "<group>"; };
+		2514438721940EE8003E8424 /* Dimentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimentions.swift; sourceTree = "<group>"; };
+		2514438921941C5A003E8424 /* Resolutions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resolutions.swift; sourceTree = "<group>"; };
+		2514438B21942615003E8424 /* CurrentGraphsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentGraphsList.swift; sourceTree = "<group>"; };
+		2514438D21943D34003E8424 /* MovingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingPoint.swift; sourceTree = "<group>"; };
 		2525B0742185A97B007025C2 /* Papaya.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Papaya.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2525B0772185A97B007025C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2525B0792185A97B007025C2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -81,8 +91,6 @@
 		255004D921899480003DF21D /* XAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XAxis.swift; sourceTree = "<group>"; };
 		255004DB218D7DA6003DF21D /* YAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAxis.swift; sourceTree = "<group>"; };
 		255004DD218D8DB9003DF21D /* ResolutionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolutionMenu.swift; sourceTree = "<group>"; };
-		255004DF218DA8A7003DF21D /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
-		255004E1218DAA84003DF21D /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,8 +186,10 @@
 			isa = PBXGroup;
 			children = (
 				2525B0A92185B725007025C2 /* Curve.swift */,
+				251443852192D488003E8424 /* CurveContainer.swift */,
 				2525B0AE218608C8007025C2 /* CurveTitle.swift */,
 				255004D12186B0E5003DF21D /* Graph.swift */,
+				2514438321929319003E8424 /* GraphBubble.swift */,
 				255004DD218D8DB9003DF21D /* ResolutionMenu.swift */,
 				255004D921899480003DF21D /* XAxis.swift */,
 				255004DB218D7DA6003DF21D /* YAxis.swift */,
@@ -188,8 +198,10 @@
 				255004D32186B94D003DF21D /* Geometric.swift */,
 				255004D72186F792003DF21D /* DatesFilter.swift */,
 				255004D52186E878003DF21D /* DateExtension.swift */,
-				255004DF218DA8A7003DF21D /* UIViewExtension.swift */,
-				255004E1218DAA84003DF21D /* ShadowView.swift */,
+				2514438721940EE8003E8424 /* Dimentions.swift */,
+				2514438921941C5A003E8424 /* Resolutions.swift */,
+				2514438B21942615003E8424 /* CurrentGraphsList.swift */,
+				2514438D21943D34003E8424 /* MovingPoint.swift */,
 			);
 			path = Curve;
 			sourceTree = "<group>";
@@ -355,19 +367,23 @@
 				2525B07A2185A97B007025C2 /* ViewController.swift in Sources */,
 				255004D42186B94D003DF21D /* Geometric.swift in Sources */,
 				255004DE218D8DB9003DF21D /* ResolutionMenu.swift in Sources */,
+				251443862192D488003E8424 /* CurveContainer.swift in Sources */,
 				2514437E218F5202003E8424 /* CurveMarker.swift in Sources */,
 				2525B0AD2185B853007025C2 /* ViewTemplate.swift in Sources */,
 				25144380218FEAA3003E8424 /* TouchView.swift in Sources */,
-				255004E0218DA8A7003DF21D /* UIViewExtension.swift in Sources */,
+				2514438A21941C5A003E8424 /* Resolutions.swift in Sources */,
 				251443822190697C003E8424 /* Tests.swift in Sources */,
 				255004D82186F792003DF21D /* DatesFilter.swift in Sources */,
+				2514438E21943D34003E8424 /* MovingPoint.swift in Sources */,
+				2514438C21942615003E8424 /* CurrentGraphsList.swift in Sources */,
 				255004DC218D7DA6003DF21D /* YAxis.swift in Sources */,
 				255004D22186B0E5003DF21D /* Graph.swift in Sources */,
 				255004D62186E878003DF21D /* DateExtension.swift in Sources */,
-				255004E2218DAA84003DF21D /* ShadowView.swift in Sources */,
+				2514438821940EE8003E8424 /* Dimentions.swift in Sources */,
 				2525B0AF218608C8007025C2 /* CurveTitle.swift in Sources */,
 				2525B0782185A97B007025C2 /* AppDelegate.swift in Sources */,
 				2525B0A72185AC82007025C2 /* Globals.swift in Sources */,
+				2514438421929319003E8424 /* GraphBubble.swift in Sources */,
 				2525B0AA2185B725007025C2 /* Curve.swift in Sources */,
 				255004DA21899480003DF21D /* XAxis.swift in Sources */,
 			);

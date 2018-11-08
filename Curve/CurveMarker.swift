@@ -42,13 +42,12 @@ class CurveMarker: UIView {
         marker.backgroundColor=UIColor.red
     }
     
+
     func unmark()
     {
         marker.frame=markFrame
         marker.layer.borderColor=UIColor.white.cgColor
         marker.backgroundColor=UIColor.black
-
-
     }
     
     
@@ -56,7 +55,7 @@ class CurveMarker: UIView {
     convenience init () {
         self.init(frame:CGRect.zero)
     }
-    
+
     required init(coder aDecoder: NSCoder) {
         fatalError("This class does not support NSCoding")
     }
