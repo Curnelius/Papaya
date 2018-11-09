@@ -32,6 +32,7 @@ class Geometric {
     var endDate:Date!
     var GmaxXAxisValues:Int!
     var persistanceMaxValueInData:CGFloat = 0
+    var numScreensToScroll:Int!
     private let datesFilters = DatesFilter()
     private let filter  = DatesFilter()
 
@@ -42,10 +43,12 @@ class Geometric {
  
 
     
+    
+    
     func getPointOnPath(touch:CGPoint)->MovingPoint
     {
 
-    
+ 
         var movingP:MovingPoint
         
        
@@ -54,6 +57,7 @@ class Geometric {
         let lockPrecentage:CGFloat=10.0
         let touchX:CGFloat=touch.x
         
+     
         
         //no points
         movingP=MovingPoint.init(pointOnScreen:CGPoint(x: -50.0, y: -50.0), value:CGFloat(0), isPointOnCurve: false, date:getDateForPoint(point: CGPoint(x: touchX, y: 0.0)))
@@ -62,7 +66,7 @@ class Geometric {
         
         for index in 0..<pairs.count-1
         {
-            
+
             let point1=pairs[index]
             let point2=pairs[index+1]
             
@@ -109,13 +113,13 @@ class Geometric {
     
     func getDatesLocationsPairs()->[[String:CGFloat]]
     {
-        return  filter.getStringDateAndLocation(endDate: Date(), resolution: Gresolution, maximumValues: GmaxXAxisValues)
+        return  filter.getStringDateAndLocation(endDate: Date(), resolution: Gresolution, maximumValues: GmaxXAxisValues,scrollingScreens:numScreensToScroll)
 
     }
     
     
     //for curve draw returns locations on screen of x and y points, without values (dates/yvalue)
-    func getCurvePairsInPixels()->[CGPoint]
+    func getCurvePairsInPixels(scrollingScreens:Int)->[CGPoint]
     {
         
         var finalCurve = [CGPoint]()
@@ -129,7 +133,10 @@ class Geometric {
             
             //get a number that present a date relative position to our span, so 11am is 0.5 in a  10-12am span.
             // -1 means the date is outside the span and will not be counted
-            let relativeTime = datesFilters.getRelativeTime(resolutionMin: Gresolution, withDate: date, endDate: endDate, maxXValues: GmaxXAxisValues)
+            let relativeTime = datesFilters.getRelativeTime(resolutionMin: Gresolution, withDate: date, endDate: endDate, maxXValues: GmaxXAxisValues,scrollingScreens:scrollingScreens )
+            
+
+            
             if(relativeTime != -1 )
             {
                 let x = getXValue(relativeT: relativeTime)

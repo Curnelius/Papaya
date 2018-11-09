@@ -29,9 +29,15 @@ class Graph: UIView {
     private var animLength = 1.0
  
  
+    var scroller:UIScrollView!
     
     
-    init (frame : CGRect,points:[CGPoint])
+    
+    
+    
+    
+    
+    init (frame : CGRect,points:[CGPoint], scrollerContentWidth:CGFloat)
     {
 
         curvePoints=points
@@ -40,14 +46,26 @@ class Graph: UIView {
         size=frame.size
         
       
+        
+        scroller = UIScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        scroller.alwaysBounceHorizontal = true
+        scroller.contentSize=CGSize(width: scrollerContentWidth, height: frame.height)
+        scroller.bounces=false
+        scroller.showsHorizontalScrollIndicator=false
+        scroller.isScrollEnabled=false
+        
+        self.addSubview(scroller) 
+        
+        
  
         shapeLayer.lineWidth = 1.5
         shapeLayer.lineJoin = CAShapeLayerLineJoin.round
         shapeLayer.lineCap = CAShapeLayerLineCap.round
         shapeLayer.strokeStart = 0
-        self.layer.addSublayer(shapeLayer)
+        scroller.layer.addSublayer(shapeLayer)
         
         
+ 
         
         
         

@@ -15,7 +15,7 @@ class Curve: UIView {
  
       var container:CurveContainer!
     
-      var cornerRadius = 24.0
+      var cornerRadius = 26.0
     
     
     

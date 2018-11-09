@@ -22,20 +22,32 @@ import UIKit
 // get cleaned and rounded list of dates
 // get pairs for strings and locations
 
-class XAxis: UIView {
+
+protocol XAxisProtocol : class {
+    
+    func XAxisDelegate(offset:CGFloat )
+    
+}
+
+
+
+
+class XAxis: UIView,UIScrollViewDelegate {
     
     
     
     var labelColor:UIColor = UIColor.gray
     let datesFilter = DatesFilter ()
     var defaultFont = "Avenir-Light"
+    var scroller:UIScrollView!
+    
+    var delegate:XAxisProtocol! = nil
 
     
     
     
     
-    
-    init (frame : CGRect, textColor:UIColor,font:String)
+    init (frame : CGRect, textColor:UIColor,font:String,scrollerContentWidth:CGFloat)
     {
  
         
@@ -43,44 +55,65 @@ class XAxis: UIView {
        defaultFont=font
         
  
-       super.init(frame : frame)
+        super.init(frame : frame)
         
         self.backgroundColor=UIColor.clear
-  
+        self.isUserInteractionEnabled=true
         
+        
+        scroller = UIScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        scroller.alwaysBounceHorizontal = true
+        scroller.contentSize=CGSize(width: scrollerContentWidth, height: frame.height)
+        scroller.backgroundColor=UIColor.clear
+        scroller.delegate=self
+        scroller.bounces=false
+        scroller.showsHorizontalScrollIndicator=false
+        self.addSubview(scroller)
+        
+ 
+ 
+ 
  
         
     }
     
     
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+ 
+        self.delegate.XAxisDelegate(offset: scrollView.contentOffset.x)
+    }
+    
+    
  
     func updateXaxis(xAxis:[[String:CGFloat]])
     {
-        
        removeAll()
         
         
         //add x
         for pair in xAxis
         {
+   
+            
             let dateString = Array(pair.keys)[0]
             let location = Array(pair.values)[0]
-            let locationOnScreen = location*frame.size.width
+            let locationOnScreen = location*scroller.contentSize.width
             let labelWidth=frame.width/10.0
-            
             let label = UILabel(frame: CGRect(x: locationOnScreen-labelWidth/2.0, y:0, width: labelWidth, height: frame.size.height))
             label.text=dateString
             label.font=UIFont(name: defaultFont, size: 10)
             label.textAlignment = .center
             label.textColor=labelColor
-            if (locationOnScreen>=0){self.addSubview(label)}
-            
+            if (locationOnScreen>=0){scroller.addSubview(label)}
             let line = UIView(frame: CGRect(x: label.frame.midX-1.0, y: 0, width: 1.0, height: 4.0))
             line.backgroundColor=label.textColor
-            self.addSubview(line)
+            scroller.addSubview(line)
  
         }
+        
+        
+ 
     }
     
     
@@ -90,7 +123,7 @@ class XAxis: UIView {
     
     func removeAll()
     {
-        for view in self.subviews {view.removeFromSuperview()}
+        for view in scroller.subviews {view.removeFromSuperview()}
     }
 
 

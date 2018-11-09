@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbleViewProtocol {
+class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbleViewProtocol,XAxisProtocol {
 
     
     var cornerRadius:CGFloat = 24.0
@@ -36,6 +36,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     private  let geometric = Geometric()
     private var graphs = CurrentGraphsList()
     
+    private var currentGraphsOffset:CGFloat=0
     
     
     
@@ -56,10 +57,11 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         
         //set geometrics constant vars, geometric is alive forever
         
-        geometric.Gsize=dimensions.curveSize.size
-        geometric.Gresolution=resolutions.currentXResolution
+        geometric.Gsize=CGSize(width: dimensions.scrollerContentWidth, height: dimensions.graphHeight)
+        geometric.Gresolution=resolutions.currentXResolution*dimensions.scrollingScreens //1screen resolution x num screens
         geometric.GmaxValue=CGFloat(resolutions.currentYResolution)
         geometric.GmaxXAxisValues=resolutions.maxXAxisValues
+        geometric.numScreensToScroll=dimensions.scrollingScreens
         geometric.endDate=Date()
         
         
@@ -98,10 +100,13 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         
         //add axises - now we add only dates which independent on data but on default resolution
         
-        let axisLabelColor = UIColor(red: 0.55, green: 0.55, blue: 0.55, alpha: 1.0)
-        Xaxis = XAxis(frame: dimensions.axisXFrame, textColor: axisLabelColor, font:"LucidaGrande")
+        let axisLabelColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
+        Xaxis = XAxis(frame: dimensions.axisXFrame, textColor: axisLabelColor, font:"LucidaGrande",scrollerContentWidth:dimensions.scrollerContentWidth)
         Xaxis.backgroundColor=UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
         Xaxis.updateXaxis(xAxis: geometric.getDatesLocationsPairs())
+        Xaxis.delegate=self
+        
+        
         Yaxis = YAxis(frame: dimensions.axisYFrame, textColor: axisLabelColor, font:"LucidaGrande" )
         Yaxis.layer.zPosition=1000
         self.addSubview(Xaxis)
@@ -148,6 +153,21 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     //**** delegates
     
     
+    
+    //scrolling the x delegate
+    func XAxisDelegate(offset: CGFloat) {
+ 
+        currentGraphsOffset=offset
+        
+        for graph in graphs.graphs
+        {
+            let view = graph.view as! Graph
+            let frm=view.scroller.frame
+            view.scroller.scrollRectToVisible(CGRect(x: offset, y: 0, width: frm.width, height: frm.height), animated: false)
+        }
+    }
+    
+    
     //touch moved delegate - move marker
     func TouchViewDelegate(touched: CGPoint) {
         
@@ -155,14 +175,17 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         marker.isHidden=false
         bubbleView.hide()
         
+        //touch point referenced to scrolling position of graphs (touch is single screen)
+        let touchPointReferenced = CGPoint(x: touched.x+currentGraphsOffset, y: touched.y)
         
-        let movingPoint = geometric.getPointOnPath(touch: touched)
+        let movingPoint = geometric.getPointOnPath(touch: touchPointReferenced)
         var finalPoint:CGPoint =  movingPoint.pointOnScreen
         let isOnGraph = movingPoint.isPointOnCurve
         let value = movingPoint.value
         let date = movingPoint.date
         
         finalPoint.y=dimensions.curveSize.height-finalPoint.y
+        finalPoint.x=finalPoint.x-currentGraphsOffset
         
         //set marker
         marker.center=finalPoint
@@ -181,7 +204,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         
         
         let datefilter = DatesFilter()
-        let stringDate = datefilter.getDateAsString(forDate: date, resolution: resolutions.currentXResolution)
+        let stringDate = datefilter.getDateAsString(forDate: date, resolution: resolutions.currentXResolution,scrollingScreens: dimensions.scrollingScreens)
         curveTitles.subtitle.text = String(format: "%.2f, at %@", value,stringDate)
         
 
@@ -247,23 +270,15 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     
     func ResolutionMenuDelegate(selected: String) {
         
-        let resolutionMenuTitles = resolutions.resolutionMenuTitles
         
-        //10M
-        if (selected == resolutionMenuTitles[0]) { resolutions.currentXResolution=24}
-            //1H
-        else if (selected == resolutionMenuTitles[1]) {resolutions.currentXResolution=60}
-            //1D
-        else if (selected == resolutionMenuTitles[2]) {resolutions.currentXResolution=60*24}
-            //3D
-        else if (selected == resolutionMenuTitles[3]) {resolutions.currentXResolution=60*24*3}
-            //5D
-        else if (selected == resolutionMenuTitles[4]) {resolutions.currentXResolution=60*24*5}
-            //1M
-        else if (selected == resolutionMenuTitles[5]) {resolutions.currentXResolution=60*24*31}
+        //get resolution for menu choice
+        let datefilter = DatesFilter()
+        let res=datefilter.getResolutionInMin(forString: selected)
+        resolutions.currentXResolution=res
+        
         
         //new resolution
-        geometric.Gresolution=resolutions.currentXResolution
+        geometric.Gresolution=resolutions.currentXResolution*dimensions.scrollingScreens
         //update date to draw curve related to the right date
         geometric.endDate=Date()
         
@@ -364,7 +379,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         geometric.dataPairs=data
  
         //add curve
-        let graph = Graph(frame: dimensions.curveSize,points:geometric.getCurvePairsInPixels())
+        let graph = Graph(frame: dimensions.curveSize,points:geometric.getCurvePairsInPixels(scrollingScreens: dimensions.scrollingScreens),scrollerContentWidth:dimensions.scrollerContentWidth)
         graph.curveFillColor=fill
         graph.curveLineColor=line
         self.addSubview(graph)
@@ -396,7 +411,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
                 //set current data
                 geometric.dataPairs=data
                 //setup final pixels pairs to let indicator run on top curve
-                geometric.CurvePairsInPixels = geometric.getCurvePairsInPixels()
+                geometric.CurvePairsInPixels = geometric.getCurvePairsInPixels(scrollingScreens: dimensions.scrollingScreens)
                 return
         
    

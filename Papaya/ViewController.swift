@@ -24,11 +24,10 @@ class ViewController: UIViewController {
        //Get fake data:(
        var data = [[String:Any]]()
        var data2 = [[String:Any]]()
-       var data3 = [[String:Any]]()
+ 
        let test = Tests()
-       data=test.getSingleSetOfData(intervals: 20, numberElements: 90, max: 500)
+       data=test.getSingleSetOfData(intervals: 20, numberElements: 200, max: 100)
        data2=test.getAverageForData(data: data, parameter: 10)
-       data3=test.getSingleSetOfData(intervals: 50, numberElements: 90, max: 500)
  
  
   
@@ -52,9 +51,10 @@ class ViewController: UIViewController {
 
         curve.addNewCurve(name: "Garden", data: data, fillColor:orangeColor ,lineColor:orangeLine ,animation:"bottom" )
         curve.addNewCurve(name: "Average", data: data2, fillColor:blueColor,lineColor:blueLine ,animation:"bottom" )
-        curve.addNewCurve(name: "Sex", data: data3, fillColor:yellowColor,lineColor:yellowColor ,animation:"bottom" )
-
+        
+        //curve.addNewCurve(name: "Sex", data: data3, fillColor:yellowColor,lineColor:yellowColor ,animation:"bottom" )
         //curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left" )
+        
  
         
      }

@@ -26,6 +26,8 @@ struct CurveDimensions {
     let menuframe:CGRect
     let bubbleFrame:CGRect
     let markerFrame:CGRect
+    let scrollerContentWidth:CGFloat //size of content
+    let scrollingScreens:Int
     
     
     
@@ -37,7 +39,9 @@ struct CurveDimensions {
          titlesFrame=CGRect(x:deltas, y:deltas, width: self.frame.width, height: 0.185*self.frame.height)
          bottomSpace = 0.125*self.frame.height
          graphHeight = 0.7 * ( frame.height-bottomSpace-titlesFrame.size.height )
+         scrollingScreens=2
          curveSize=CGRect(x:0, y:frame.height-bottomSpace-graphHeight, width:self.frame.width, height: graphHeight)
+         scrollerContentWidth=CGFloat(scrollingScreens)*self.frame.width
          axisXFrame=CGRect(x: 0, y:frame.height-bottomSpace, width: frame.width, height: bottomSpace)
          axisYFrame=CGRect(x: 0, y:curveSize.origin.y, width: bottomSpace, height: curveSize.height)
          menuWidth=0.5*frame.width
