@@ -13,6 +13,40 @@ class Tests {
 
 
     
+    func getSquareWaveData(intervals:Int, numberElements:Int, max:Int)->[[String:Any]]
+    {
+        
+        //fake data
+        var data = [[String:Any]]()
+        let dateCount=numberElements
+        let dataArray:[CGFloat]=[2,2,4,4,6,6,8,8,6,6,4,4,2,2,4,4,6,6,8,8,25,15,1,1,5,5,9,9,2,2]
+        
+        for i in 0..<dataArray.count
+        {
+            //date
+            let current = Date()
+            let date = current.addingTimeInterval(Double(-intervals * (dateCount-i)) * 60.0)
+            
+            //value
+            var random:CGFloat = 0
+            random = dataArray[i]
+            
+            
+            
+            
+            
+            //add
+            var pair1 =  [String:Any]()
+            pair1["date"]=date
+            pair1["value"]=random
+            data.append(pair1)
+            
+        }
+        
+        return data
+    }
+    
+    
     func getSingleSetOfData(intervals:Int, numberElements:Int, max:Int)->[[String:Any]]
     {
         
@@ -39,11 +73,29 @@ class Tests {
             
          
         }
-        print(data.last)
+        
         return data
 
     }
     
+    
+    func getSingleValue(value:CGFloat)->[[String:Any]]
+    {
+        
+        //date
+        let current = Date()
+        let date = current.addingTimeInterval(Double(-5  * 60.0))
+        
+        
+        //add
+        var data = [[String:Any]]()
+        var pair1 =  [String:Any]()
+        pair1["date"]=date
+        pair1["value"]=value
+        data.append(pair1)
+        return data
+        
+    }
     
     
     

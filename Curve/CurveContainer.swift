@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbleViewProtocol,XAxisProtocol {
+class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbleViewProtocol,XAxisProtocol  {
 
     
     var cornerRadius:CGFloat = 24.0
@@ -63,7 +63,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         geometric.GmaxXAxisValues=resolutions.maxXAxisValues
         geometric.numScreensToScroll=dimensions.scrollingScreens
         geometric.endDate=Date()
-        
+ 
         
         
      
@@ -103,8 +103,9 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         let axisLabelColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
         Xaxis = XAxis(frame: dimensions.axisXFrame, textColor: axisLabelColor, font:"LucidaGrande",scrollerContentWidth:dimensions.scrollerContentWidth)
         Xaxis.backgroundColor=UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
+        Xaxis.delegate=self //delegate before update to let scrolling update this view for offset calculations
         Xaxis.updateXaxis(xAxis: geometric.getDatesLocationsPairs())
-        Xaxis.delegate=self
+        
         
         
         Yaxis = YAxis(frame: dimensions.axisYFrame, textColor: axisLabelColor, font:"LucidaGrande" )
@@ -130,6 +131,12 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         bubbleView=GraphBubble(frame: dimensions.bubbleFrame,font:"LucidaGrande")
         bubbleView.delegate=self
         self.addSubview(bubbleView)
+        
+        
+        //menu
+        
+        let menuB = MenuButton(frame: dimensions.menuBFrame)
+        self.addSubview(menuB)
 
     }
     
@@ -152,17 +159,21 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     
     //**** delegates
     
-    
+ 
     
     //scrolling the x delegate
     func XAxisDelegate(offset: CGFloat) {
  
-        currentGraphsOffset=offset
         
+        currentGraphsOffset=offset
+         
+ 
         for graph in graphs.graphs
         {
+            
             let view = graph.view as! Graph
             let frm=view.scroller.frame
+            print(view.scroller.contentOffset.x)
             view.scroller.scrollRectToVisible(CGRect(x: offset, y: 0, width: frm.width, height: frm.height), animated: false)
         }
     }
@@ -171,6 +182,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     //touch moved delegate - move marker
     func TouchViewDelegate(touched: CGPoint) {
         
+      
         //show marker
         marker.isHidden=false
         bubbleView.hide()
@@ -183,10 +195,10 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         let isOnGraph = movingPoint.isPointOnCurve
         let value = movingPoint.value
         let date = movingPoint.date
-        
         finalPoint.y=dimensions.curveSize.height-finalPoint.y
         finalPoint.x=finalPoint.x-currentGraphsOffset
         
+      
         //set marker
         marker.center=finalPoint
         marker.unmark()
@@ -270,6 +282,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     
     func ResolutionMenuDelegate(selected: String) {
         
+        print(currentGraphsOffset)
         
         //get resolution for menu choice
         let datefilter = DatesFilter()
@@ -284,6 +297,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         
         //update x axis
         Xaxis.updateXaxis(xAxis: geometric.getDatesLocationsPairs())
+        
         
         
         updateCurves()
@@ -312,6 +326,9 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     
     func updateCurves()
     {
+ 
+ 
+        
         for graph in graphs.graphs{
             
         
@@ -322,7 +339,8 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
             let animation=graph.animation
             let fill = view.curveFillColor
             let line = view.curveLineColor
-            
+ 
+ 
             //views array
             
             //remove view
@@ -346,7 +364,8 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     func addNewCurve(name:String, data:[[String:Any]],fillColor:UIColor,lineColor:UIColor, animation:String)
     {
         
-        
+        //check if has higher max, if has, update max, then first update previous to current max, then draw new
+        if (geometric.isHigherMax(Newdata: data)) {updateCurves()}
         
         //add curve
         let newGraphView=addCurveView(data:data, fill: fillColor, line: lineColor,animation:animation )

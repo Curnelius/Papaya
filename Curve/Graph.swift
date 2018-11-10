@@ -65,7 +65,9 @@ class Graph: UIView {
         scroller.layer.addSublayer(shapeLayer)
         
         
- 
+        //put at end to be synced with the dates scroller.
+        scroller.setContentOffset(CGPoint(x: scroller.contentSize.width-scroller.frame.width, y: 0), animated: false)
+
         
         
         

@@ -24,13 +24,19 @@ class ViewController: UIViewController {
        //Get fake data:(
        var data = [[String:Any]]()
        var data2 = [[String:Any]]()
+       var data3 = [[String:Any]]()
  
        let test = Tests()
-       data=test.getSingleSetOfData(intervals: 20, numberElements: 200, max: 100)
-       data2=test.getAverageForData(data: data, parameter: 10)
+       data=test.getSingleSetOfData(intervals: 20, numberElements: 200, max: 20)
+       data2=test.getSquareWaveData(intervals: 10, numberElements: 20, max: 0)
  
+        
  
-  
+        //temp
+        data = test.getSingleValue(value: 10)
+        data2 = test.getSingleValue(value: 20)
+        data3 = test.getSingleValue(value: 30)
+
  
         //add curve view (not curve)
         let size = CGRect(x: 10, y: 80, width: w, height: h)
@@ -51,7 +57,8 @@ class ViewController: UIViewController {
 
         curve.addNewCurve(name: "Garden", data: data, fillColor:orangeColor ,lineColor:orangeLine ,animation:"bottom" )
         curve.addNewCurve(name: "Average", data: data2, fillColor:blueColor,lineColor:blueLine ,animation:"bottom" )
-        
+        curve.addNewCurve(name: "Sex", data: data3, fillColor:yellowColor,lineColor:yellowColor ,animation:"bottom" )
+
         //curve.addNewCurve(name: "Sex", data: data3, fillColor:yellowColor,lineColor:yellowColor ,animation:"bottom" )
         //curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left" )
         

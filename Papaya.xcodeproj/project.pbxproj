@@ -36,6 +36,8 @@
 		255004DA21899480003DF21D /* XAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004D921899480003DF21D /* XAxis.swift */; };
 		255004DC218D7DA6003DF21D /* YAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004DB218D7DA6003DF21D /* YAxis.swift */; };
 		255004DE218D8DB9003DF21D /* ResolutionMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255004DD218D8DB9003DF21D /* ResolutionMenu.swift */; };
+		2555D24C219693C400F97A18 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2555D24B219693C400F97A18 /* MenuButton.swift */; };
+		2555D24F2196942A00F97A18 /* menuB.png in Resources */ = {isa = PBXBuildFile; fileRef = 2555D24E2196942A00F97A18 /* menuB.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		255004D921899480003DF21D /* XAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XAxis.swift; sourceTree = "<group>"; };
 		255004DB218D7DA6003DF21D /* YAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAxis.swift; sourceTree = "<group>"; };
 		255004DD218D8DB9003DF21D /* ResolutionMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolutionMenu.swift; sourceTree = "<group>"; };
+		2555D24B219693C400F97A18 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		2555D24E2196942A00F97A18 /* menuB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuB.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +206,7 @@
 				2514438921941C5A003E8424 /* Resolutions.swift */,
 				2514438B21942615003E8424 /* CurrentGraphsList.swift */,
 				2514438D21943D34003E8424 /* MovingPoint.swift */,
+				2555D24B219693C400F97A18 /* MenuButton.swift */,
 			);
 			path = Curve;
 			sourceTree = "<group>";
@@ -217,6 +222,7 @@
 		255004CB2186A6C3003DF21D /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				2555D24D2196941500F97A18 /* Icons */,
 				255004CC2186A6CB003DF21D /* Fonts */,
 			);
 			path = Assets;
@@ -229,6 +235,14 @@
 				255004CE2186A6F2003DF21D /* LucidaGrandeBold.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		2555D24D2196941500F97A18 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				2555D24E2196942A00F97A18 /* menuB.png */,
+			);
+			path = Icons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,6 +352,7 @@
 				255004CF2186A8E0003DF21D /* LucidaGrande.ttf in Resources */,
 				255004D02186A8E0003DF21D /* LucidaGrandeBold.ttf in Resources */,
 				2525B0822185A97D007025C2 /* LaunchScreen.storyboard in Resources */,
+				2555D24F2196942A00F97A18 /* menuB.png in Resources */,
 				2525B07F2185A97D007025C2 /* Assets.xcassets in Resources */,
 				2525B07D2185A97B007025C2 /* Main.storyboard in Resources */,
 			);
@@ -364,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2555D24C219693C400F97A18 /* MenuButton.swift in Sources */,
 				2525B07A2185A97B007025C2 /* ViewController.swift in Sources */,
 				255004D42186B94D003DF21D /* Geometric.swift in Sources */,
 				255004DE218D8DB9003DF21D /* ResolutionMenu.swift in Sources */,

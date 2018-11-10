@@ -40,7 +40,6 @@ class XAxis: UIView,UIScrollViewDelegate {
     let datesFilter = DatesFilter ()
     var defaultFont = "Avenir-Light"
     var scroller:UIScrollView!
-    
     var delegate:XAxisProtocol! = nil
 
     
@@ -53,7 +52,7 @@ class XAxis: UIView,UIScrollViewDelegate {
         
        labelColor=textColor
        defaultFont=font
-        
+ 
  
         super.init(frame : frame)
         
@@ -81,7 +80,7 @@ class XAxis: UIView,UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
  
-        self.delegate.XAxisDelegate(offset: scrollView.contentOffset.x)
+        self.delegate?.XAxisDelegate(offset: scrollView.contentOffset.x)
     }
     
     
@@ -105,6 +104,7 @@ class XAxis: UIView,UIScrollViewDelegate {
             label.font=UIFont(name: defaultFont, size: 10)
             label.textAlignment = .center
             label.textColor=labelColor
+            label.layoutSubviews()
             if (locationOnScreen>=0){scroller.addSubview(label)}
             let line = UIView(frame: CGRect(x: label.frame.midX-1.0, y: 0, width: 1.0, height: 4.0))
             line.backgroundColor=label.textColor
@@ -112,7 +112,8 @@ class XAxis: UIView,UIScrollViewDelegate {
  
         }
         
-        
+        scroller.setContentOffset(CGPoint(x: scroller.contentSize.width-scroller.frame.width, y: 0), animated: true)
+ 
  
     }
     

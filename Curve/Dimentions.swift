@@ -28,7 +28,8 @@ struct CurveDimensions {
     let markerFrame:CGRect
     let scrollerContentWidth:CGFloat //size of content
     let scrollingScreens:Int
-    
+    let menuBFrame:CGRect
+    let menuBWidth:CGFloat!
     
     
     init (frame:CGRect)
@@ -49,5 +50,7 @@ struct CurveDimensions {
          menuframe=CGRect(x: frame.width-menuWidth, y:titlesFrame.maxY, width: menuWidth, height: menuHeight)
          bubbleFrame=CGRect(x:deltas, y: titlesFrame.maxY-titlesFrame.height/3.0, width: frame.width/5.0, height: titlesFrame.height/3.0)
          markerFrame=CGRect(x: -20.0, y: 0, width: 8.0, height: 8.0)
+        menuBWidth=0.05*frame.height
+        menuBFrame=CGRect(x: frame.width-deltas-menuBWidth, y: deltas, width: menuBWidth, height: menuBWidth)
     }
 }

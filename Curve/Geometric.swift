@@ -17,7 +17,7 @@ import UIKit
 //then get this date's value also as relative point in screen
 
 
- 
+
 
 
 
@@ -36,7 +36,7 @@ class Geometric {
     private let datesFilters = DatesFilter()
     private let filter  = DatesFilter()
 
-
+ 
 
     
  
@@ -48,7 +48,7 @@ class Geometric {
     func getPointOnPath(touch:CGPoint)->MovingPoint
     {
 
- 
+         
         var movingP:MovingPoint
         
        
@@ -220,19 +220,29 @@ class Geometric {
  
     private func getMaxValue()->CGFloat
     {
-        //calculate maximum value only once in a life time. any added graph will be drawn relative to this scale
-        //do not recalculate according to a new datapair. First data pair determine our Y scale.
-        if(persistanceMaxValueInData != 0 ) {return persistanceMaxValueInData}
-        
-        let maxValue = dataPairs.map { $0["value"] as! CGFloat }.max()!
-        persistanceMaxValueInData=maxValue
-        return maxValue
+       //for multiple graphs we check for the highest top of all of them
+        //if first max is 10, and second max is 5, we draw both according to max 10
+        //if first max is 10 then later second max is 20, we calculate for 20 and delegate an update
+
+         return persistanceMaxValueInData
 
 
     }
 
 
 
+    //check if a new graph has higher max than last max AND SET it
+    func isHigherMax(Newdata:[[String:Any]])->Bool
+    {
+         let NewMaxValue = Newdata.map { $0["value"] as! CGFloat }.max()!
+        
+        if(NewMaxValue>persistanceMaxValueInData) {
+            persistanceMaxValueInData=NewMaxValue
+            return true
+            
+        }
+        return false
+    }
 
 
 
