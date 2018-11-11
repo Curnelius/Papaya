@@ -78,7 +78,13 @@ class Graph: UIView {
     
     
     
-    //display link
+    
+    
+    
+    
+    
+    
+    //display link for drawing gradually, will call the drawer with higher heights
     
     
     
@@ -124,6 +130,13 @@ class Graph: UIView {
     
     
     
+    //start drawing any curve
+    // animation:
+    //left is line
+    // bottom is full graph
+    //mark is marking with lines
+    //points are points
+    
     
     
     
@@ -140,6 +153,26 @@ class Graph: UIView {
             self.drawFromLeft(duration: duration)
             return
         }
+        else if (animation=="mark")
+        {
+            
+            //draw line after delat
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.85, execute: {
+                 self.startMarkingCurve(duration: duration)
+            })
+            
+            return
+        }
+        else if (animation=="points")
+        {
+            
+            //draw line after delat
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.85, execute: {
+                self.startDrawingPoints(duration: duration)
+            })
+            
+            return
+        }
 
 
         
@@ -148,6 +181,18 @@ class Graph: UIView {
     
     
     
+    
+    
+    
+    
+    
+    //****drawers
+    
+    
+    
+    
+    
+    // line
     func drawFromLeft(duration:Float)
     {
         
@@ -167,7 +212,10 @@ class Graph: UIView {
     
     
     
-    //draw height gradually
+    
+    
+    
+    //graph draw height gradually
     func drawCurve(height:CGFloat)
     {
         
@@ -180,11 +228,7 @@ class Graph: UIView {
          var point2:CGPoint!
          //var smoothData = self.smooth(alpha: 0.4)
         
-        
- 
-       
-       
-        
+         
         
         
         
@@ -230,16 +274,121 @@ class Graph: UIView {
  
  
 
+ 
+ 
+    
+    
+    
+    
+    //***** marking functions (lines and points)
+    
+    func startMarkingCurve(duration:Float)
+    {
+        //no fill
+        shapeLayer.fillColor =  UIColor.clear.cgColor
+        shapeLayer.lineWidth=2.0
+        
+        //set the path for maximum height
+        markCurveLines()
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.duration = Double(duration)
+        shapeLayer.add(animation, forKey: "MyAnimation")
+    }
+    
+    func startDrawingPoints(duration:Float)
+    {
+        //no fill
+        shapeLayer.lineWidth=1.0
+        
+        //set the path for maximum height
+        markCurvePoints()
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.duration = Double(duration)
+        shapeLayer.add(animation, forKey: "MyAnimation")
+    }
+    
+    
+    //lines
+    func markCurveLines()
+    {
+        
+        //less than 2 points
+        if (curvePoints.count<2){ return }
+        
+       
+        
+        let path = UIBezierPath()
+        var point1:CGPoint!
+        var point2:CGPoint!
+        
+        
+        
+        let sequence = stride(from: 0, to: (curvePoints.count-1), by: 2)
+
+        for i in sequence
+        {
+            
+            point1 =  curvePoints[i]
+            point2 = curvePoints[i+1]
+ 
+            point1.y = (size!.height-point1.y)
+            point2.y = (size!.height-point2.y)
+            
+            path.move(to: point1)
+            path.addLine(to: point2)
+            
+        }
+
+
+        shapeLayer.path = path.cgPath
+
+        
+    }
+ 
+    
+    
+    //points
+    func markCurvePoints()
+    {
+        let path = UIBezierPath()
+        let sequence = stride(from: 0, to: (curvePoints.count), by: 1)
+        
+        for i in sequence
+        {
+            
+            var  point1 =  curvePoints[i]
+            point1.y = (size!.height-point1.y)
+            path.move(to: point1)
+            path.addArc(withCenter: point1, radius: CGFloat(3.0), startAngle: CGFloat(0), endAngle: CGFloat(Double.pi * 2), clockwise: true)
+
+
+        }
+        shapeLayer.path = path.cgPath
+    }
+  
+    
+    
+    
+    
+    
+    
+    
     func smooth(alpha:CGFloat)->[CGPoint]
     {
         
-         //Y(n) = (1-ß)*Y(n-1)
+        //Y(n) = (1-ß)*Y(n-1)
         var lastPoint = CGPoint(x: 0, y: 0  )
         var smoothData = [CGPoint]()
         
         for point in curvePoints
         {
-
+            
             let newY = (1-alpha)*lastPoint.y
             let newPoint = CGPoint(x: point.x, y: newY)
             smoothData.append(newPoint)
@@ -248,14 +397,18 @@ class Graph: UIView {
         
         return smoothData
     }
- 
- 
     
     
     
- 
     
-  
+    
+    
+    
+    
+    
+    
+    
+    
     
     required init?(coder aDecoder: NSCoder) {
         // Need to initialize the number property here. Do so appropriately.

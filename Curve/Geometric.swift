@@ -111,9 +111,9 @@ class Geometric {
     }
 
     
-    func getDatesLocationsPairs()->[[String:CGFloat]]
+    func getDatesLocationsPairs()->[[Date:CGFloat]]
     {
-        return  filter.getStringDateAndLocation(endDate: Date(), resolution: Gresolution, maximumValues: GmaxXAxisValues,scrollingScreens:numScreensToScroll)
+        return  filter.getDatesLocations(endDate: Date(), resolution: Gresolution, maximumValues: GmaxXAxisValues,scrollingScreens:numScreensToScroll)
 
     }
     
@@ -148,8 +148,10 @@ class Geometric {
         //handle single point
         if (finalCurve.count==1)
         {
+            let onePointWidth:CGFloat = 3.0
             finalCurve.append(finalCurve[0])
-            finalCurve[0]=CGPoint(x: 0, y: 0 )
+            finalCurve[0]=CGPoint(x: finalCurve[1].x-onePointWidth, y: finalCurve[1].y)
+ 
         }
         
         
@@ -192,7 +194,7 @@ class Geometric {
     {
        let relativeWidth = point.x/Gsize.width
        let relativeSpan = relativeWidth*CGFloat(Gresolution)
-       let openDate=datesFilters.getOpenTime(resolutionMin: Gresolution, endDate: endDate, maxXValues: GmaxXAxisValues)
+       let openDate=datesFilters.getOpenTime(resolutionMin: Gresolution, endDate: endDate)
         let date = datesFilters.getDateInterval(forDate: openDate, minutes: Int(relativeSpan))
         return date
     }

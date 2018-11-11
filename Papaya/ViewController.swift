@@ -33,10 +33,11 @@ class ViewController: UIViewController {
         
  
         //temp
-        data = test.getSingleValue(value: 10)
-        data2 = test.getSingleValue(value: 20)
+        data = test.getSingleSetOfData(intervals: 10, numberElements: 20, max: 20)
+        data2 = test.getMarkes(data: data)
         data3 = test.getSingleValue(value: 30)
-
+        
+       print(data2)
  
         //add curve view (not curve)
         let size = CGRect(x: 10, y: 80, width: w, height: h)
@@ -56,8 +57,9 @@ class ViewController: UIViewController {
 
 
         curve.addNewCurve(name: "Garden", data: data, fillColor:orangeColor ,lineColor:orangeLine ,animation:"bottom" )
-        curve.addNewCurve(name: "Average", data: data2, fillColor:blueColor,lineColor:blueLine ,animation:"bottom" )
-        curve.addNewCurve(name: "Sex", data: data3, fillColor:yellowColor,lineColor:yellowColor ,animation:"bottom" )
+        curve.addNewCurve(name: "Mark", data: data2, fillColor:blueColor,lineColor:blueLine ,animation:"points" )
+        //curve.addNewCurve(name: "Sex", data: data3, fillColor:yellowColor,lineColor:yellowColor ,animation:"bottom" )
+        
 
         //curve.addNewCurve(name: "Sex", data: data3, fillColor:yellowColor,lineColor:yellowColor ,animation:"bottom" )
         //curve.addNewCurve(name: "main2", data: data2, fillColor:UIColor.clear,lineColor:UIColor(red: 0.99, green: 0.0, blue: 0.2, alpha: 1.0),animation:"left" )

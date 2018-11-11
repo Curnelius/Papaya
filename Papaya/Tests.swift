@@ -141,6 +141,27 @@ class Tests {
     
     
     
+    func getMarkes(data:[[String:Any]])->[[String:Any]]
+    {
+        var finaldata = [[String:Any]]()
+        
+        
+           //mark between point 1-2
+            
+            let lastElement = data.count-1
+        
+        finaldata.append(data[lastElement-3])
+          finaldata.append(data[lastElement-2])
+            finaldata.append(data[lastElement-1])
+            finaldata.append(data[lastElement])
+
+        
+    
+        
+        return finaldata
+        
+ 
+    }
     
     
     

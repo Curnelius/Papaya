@@ -26,33 +26,7 @@ class DatesFilter {
     // ** graph values
     
     
-    //return  numbers 0-1 which relative to the whole time span, so  for 8-10am, 9am is 0.5
-    func getRelativeTime(resolutionMin:Int,withDate:Date, endDate:Date, maxXValues:Int, scrollingScreens:Int)->CGFloat
-    {
-        //calculate in seconds resolution
-        
-        let timeSpanSec:CGFloat  = 60.0*CGFloat(resolutionMin)
-     
-  
-      //using extension class for Date
-        let delta:Int = withDate.seconds(from: self.getOpenTime(resolutionMin: resolutionMin, endDate: endDate, maxXValues:maxXValues))
- 
-        
-            if ( delta >= 0 )
-            {
-                let relative = CGFloat(delta) / timeSpanSec
-                return relative
-        
-            }
-        return -1
-
-  
-        
-        
-    }
-    
-    
-
+   
     
     
     
@@ -64,22 +38,20 @@ class DatesFilter {
     
     
     //1. get pairs of a string date and a relative location inside the span(resolution)
-    func getStringDateAndLocation(endDate:Date, resolution:Int, maximumValues:Int, scrollingScreens:Int)->[[String:CGFloat]]
+    func getDatesLocations(endDate:Date, resolution:Int, maximumValues:Int, scrollingScreens:Int)->[[Date:CGFloat]]
     {
         
-        var finalArray = [[String:CGFloat]]()
+        var finalArray = [[Date:CGFloat]]()
         
-        for date in self.getListOfRoundedDates(endDate: endDate, resolution: resolution, maximumValues: maximumValues,scrollingScreens:scrollingScreens )
+        for date in self.getListOfDates(endDate: endDate, resolution: resolution, maximumValues: maximumValues,scrollingScreens:scrollingScreens )
         {
             
-            
-            let dateString = getDateAsString(forDate: date, resolution: resolution,scrollingScreens: scrollingScreens)
             
             //get date location on screen
             let relativeTime=self.getRelativeTime(resolutionMin: resolution, withDate: date, endDate: endDate, maxXValues: maximumValues,scrollingScreens: scrollingScreens)
             
             
-            finalArray.append([dateString:relativeTime])
+            finalArray.append([date:relativeTime])
         }
         
         
@@ -91,12 +63,12 @@ class DatesFilter {
     
     
     //2. get list of dates by resolution , time divider, and number of values to show on axis (with rounded minutes)
-    func getListOfRoundedDates(endDate:Date, resolution:Int, maximumValues:Int, scrollingScreens:Int)->[Date]
+    func getListOfDates(endDate:Date, resolution:Int, maximumValues:Int, scrollingScreens:Int)->[Date]
     {
         
         
         var finalDates = [Date]()
-        let openDate = self.getOpenTime(resolutionMin: resolution,endDate: endDate, maxXValues:maximumValues )
+        let openDate = self.getOpenTime(resolutionMin: resolution,endDate: endDate )
         var nextDate = openDate
         let timeDividerMinutes = getTimeDivider(resolution:resolution, maximumValues:maximumValues,scrollingScreens: scrollingScreens)
  
@@ -141,6 +113,36 @@ class DatesFilter {
         return resolution/defaultDistance
     }
     
+    
+    //return  numbers 0-1 which relative to the whole time span, so  for 8-10am, 9am is 0.5
+    func getRelativeTime(resolutionMin:Int,withDate:Date, endDate:Date, maxXValues:Int, scrollingScreens:Int)->CGFloat
+    {
+        //calculate in seconds resolution
+        
+        let timeSpanSec:CGFloat  = 60.0*CGFloat(resolutionMin)
+        
+        
+        //using extension class for Date
+        let delta:Int = withDate.seconds(from: self.getOpenTime(resolutionMin: resolutionMin, endDate: endDate))
+        
+        
+        if ( delta >= 0 )
+        {
+            let relative = CGFloat(delta) / timeSpanSec
+            return relative
+            
+        }
+        return -1
+        
+        
+        
+        
+    }
+    
+    
+
+    
+    
 
     
     /*
@@ -178,58 +180,11 @@ class DatesFilter {
     //**general
     
     
-    func getResolutionInMin(forString:String)->Int
-    {
-        
-     
-        //10M
-        if (forString == "10M") { return 24}
-            //1H
-        else if (forString == "1H") { return 60}
-            //1D
-        else if (forString == "1D") { return 60*24}
-            //3D
-        else if (forString == "3D") { return 60*24*3}
-            //5D
-        else if (forString == "5D") {return 60*24*5}
-            //1M
-        else if (forString == "1M") {return 60*24*31}
-        
-        return 24
-
-    }
-    
-    func getDateAsString(forDate:Date, resolution:Int, scrollingScreens:Int)->String
-    {
-        
-        //get date string
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
-        dateFormatter.locale = Locale.init(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "HH:mm"
-        
-        
-        
-        //min//hour
-        if (resolution <= 60*scrollingScreens) { dateFormatter.dateFormat = "HH:mm"}
-            //day
-        else if (resolution <= 60*24*scrollingScreens) {dateFormatter.dateFormat = "HH:mm"}
-            //3-5 days
-        else if (resolution <= 60*24*5*scrollingScreens) { dateFormatter.dateFormat = "EEE"   }
-            //month
-        else if (resolution <= 60*24*31*scrollingScreens) { dateFormatter.dateFormat = "dd.MM" }
-            //year
-        else if (resolution <= 60*24*31*12*scrollingScreens) { dateFormatter.dateFormat = "MMMM" }
-        
-        
-        let dateString = dateFormatter.string(from: forDate)
-        return dateString
-
-    }
-    
+ 
+  
     
     //return first date for a certain resolution
-    func getOpenTime(resolutionMin:Int, endDate:Date, maxXValues:Int) ->Date
+    func getOpenTime(resolutionMin:Int, endDate:Date) ->Date
     {
         let calendar = Calendar.current
         let openDateForSpan:Date = calendar.date(byAdding: .minute, value:-1*resolutionMin  , to: endDate)!
