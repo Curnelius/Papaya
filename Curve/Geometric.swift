@@ -100,26 +100,27 @@ class Geometric {
  
          }
         
-        
-
-
-  
- 
-        
         return movingP
  
     }
 
     
+    
+    
+    
+    
+    //1
     func getDatesLocationsPairs()->[[Date:CGFloat]]
     {
-        return  filter.getDatesLocations(endDate: Date(), resolution: Gresolution, maximumValues: GmaxXAxisValues,scrollingScreens:numScreensToScroll)
+        return  filter.getPairsOfDatesLocations(openDate: getOpenDate(), endDate: endDate, jumps: getJumps(),span: getSpan())
 
     }
     
     
-    //for curve draw returns locations on screen of x and y points, without values (dates/yvalue)
-    func getCurvePairsInPixels(scrollingScreens:Int)->[CGPoint]
+    
+    
+    //2 for curve draw returns locations on screen of x and y points, without values (dates/yvalue)
+    func getCurvePairsInPixels()->[CGPoint]
     {
         
         var finalCurve = [CGPoint]()
@@ -131,15 +132,14 @@ class Geometric {
             let date = pair["date"] as! Date
             let value = pair["value"] as! CGFloat
             
-            //get a number that present a date relative position to our span, so 11am is 0.5 in a  10-12am span.
-            // -1 means the date is outside the span and will not be counted
-            let relativeTime = datesFilters.getRelativeTime(resolutionMin: Gresolution, withDate: date, endDate: endDate, maxXValues: GmaxXAxisValues,scrollingScreens:scrollingScreens )
-            
+            let delta:Int = date.seconds(from: getOpenDate())
+            let relative = CGFloat(delta) / CGFloat(getSpan())
+
 
             
-            if(relativeTime != -1 )
+            if(relative != -1 )
             {
-                let x = getXValue(relativeT: relativeTime)
+                let x = getXValue(relativeT: relative)
                 let y = getYValue(value: value)
                 let point=CGPoint(x: x, y: y)
                 finalCurve.append(point)
@@ -194,7 +194,7 @@ class Geometric {
     {
        let relativeWidth = point.x/Gsize.width
        let relativeSpan = relativeWidth*CGFloat(Gresolution)
-       let openDate=datesFilters.getOpenTime(resolutionMin: Gresolution, endDate: endDate)
+       let openDate=getOpenDate()
         let date = datesFilters.getDateInterval(forDate: openDate, minutes: Int(relativeSpan))
         return date
     }
@@ -247,6 +247,72 @@ class Geometric {
     }
 
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func getOpenDate()->Date
+    {
+        let calendar = Calendar.current
+        return calendar.date(byAdding: .minute, value:-1*Gresolution  , to: endDate)!
+        
+    }
+    
+    
+    
+    func getJumps()->Int
+    {
+        let defaultDistance:Int = GmaxXAxisValues
+        
+        //1H / MINUTES
+        if(Gresolution<=60*numScreensToScroll){return (Gresolution/numScreensToScroll)/defaultDistance}
+            //1D
+        else if (Gresolution == 60*24*numScreensToScroll) { return 60*4}
+            //3D, 5D
+        else if (Gresolution == 60*24*5*numScreensToScroll) { return 60*24}
+            //1M
+        else if (Gresolution == 60*24*31*numScreensToScroll) { return 60*24*7}
+            //1Y
+        else if (Gresolution == 60*24*31*12*numScreensToScroll) { return 60*24*31}
+ 
+        
+        //case of MAX span
+        return Gresolution/defaultDistance
+    }
+    
+    
+    func getSpan()->Int
+    {
+        
+        return   endDate.seconds(from: getOpenDate())
+    }
+    
+    
+    //not open date, just first date
+    func getFirstDateForData()->Date
+    {
+        return dataPairs.first!["date"] as! Date
+    }
+    //not close date, just last date
+    func getLastDateForData()->Date
+    {
+        return dataPairs.last!["date"] as! Date
+    }
 
 
 }

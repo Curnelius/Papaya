@@ -259,6 +259,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         {
           
             let name = graph.name
+            let animation = graph.animation
             let color = graph.fillColor
             let view = graph.view as! Graph
             
@@ -266,7 +267,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
             
                if(view.order==orderToGet){
                     //bring to front
-                    self.bringGraphToFront(name: name)
+                    self.bringGraphToFront(name: name,kind: animation)
                     //show bubble
                     bubbleView.show(name: name, color: color)
                     //remove text
@@ -303,12 +304,27 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
  
         //update resolution
         resolutions.setResolutionForString(selection: selected)
- 
-        
         //update geometric resolution
         geometric.Gresolution=resolutions.currentXResolution*resolutions.scrollingScreens
         //update date to draw curve related to the right date
         geometric.endDate=Date()
+        
+ 
+        //max = band span, set resolution based on end-start dates
+        if(selected == resolutions.resolutionMenuTitles.last)
+        {
+            //calculate based on first graphs (next could be only marks
+            geometric.dataPairs=graphs.graphs[0].data
+            //calculate based on data start end, not resolution
+            let first = geometric.getFirstDateForData()
+            let last = geometric.getLastDateForData()
+            let span = last.minutes(from: first)
+            //update all
+            geometric.endDate=last
+            resolutions.currentXResolution=span
+            geometric.Gresolution=span*resolutions.scrollingScreens
+ 
+        }
         
         //update x axis
         Xaxis.updateXaxis(xAxis: getStringDatesLocationsPairs(pairs: geometric.getDatesLocationsPairs()))
@@ -367,7 +383,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
             //update graphs array
             graphs.updateView(forGraphName: name, view: newGraph)
             //update z's
-            bringGraphToFront(name: name)
+            bringGraphToFront(name: name,kind: animation)
             
         }
         
@@ -391,7 +407,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         graphs.addGraph(name: name, data: data, view: newGraphView, fill: fillColor, line: lineColor, animation: animation)
         
         
-        bringGraphToFront(name: name)
+        bringGraphToFront(name: name,kind: animation)
         
         //update y axis , maximum value and curve locations will only be calculated according to first graph's data
         Yaxis.updateYaxis(yAxis: geometric.getYAxisPairs())
@@ -413,7 +429,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
         geometric.dataPairs=data
  
         //add curve
-        let graph = Graph(frame: dimensions.curveSize,points:geometric.getCurvePairsInPixels(scrollingScreens: resolutions.scrollingScreens),scrollerContentWidth:dimensions.frame.width*CGFloat(resolutions.scrollingScreens))
+        let graph = Graph(frame: dimensions.curveSize,points:geometric.getCurvePairsInPixels(),scrollerContentWidth:dimensions.frame.width*CGFloat(resolutions.scrollingScreens))
         graph.curveFillColor=fill
         graph.curveLineColor=line
         self.addSubview(graph)
@@ -425,7 +441,7 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
     }
     
     
-    func bringGraphToFront(name:String)
+    func bringGraphToFront(name:String,kind:String)
     {
         
     
@@ -442,15 +458,16 @@ class CurveContainer: UIView,ResolutionMenuProtocol,TouchViewProtocol,GraphBubbl
                 //update reference
                 viewOnTop=view.order
                 
-                //set current data
+                //set current data - not for marks bars and lines
                 geometric.dataPairs=data
+        
                 //setup final pixels pairs to let indicator run on top curve
-                geometric.CurvePairsInPixels = geometric.getCurvePairsInPixels(scrollingScreens: resolutions.scrollingScreens)
+                 if(kind == "bottom" || kind == "left"){
+                       geometric.CurvePairsInPixels = geometric.getCurvePairsInPixels()
+                  }
+        
                 return
-        
-   
-        
-        
+ 
     }
     
     

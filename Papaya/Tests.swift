@@ -150,17 +150,52 @@ class Tests {
             
             let lastElement = data.count-1
         
-        finaldata.append(data[lastElement-3])
-          finaldata.append(data[lastElement-2])
+            finaldata.append(data[lastElement-3])
+            finaldata.append(data[lastElement-2])
             finaldata.append(data[lastElement-1])
             finaldata.append(data[lastElement])
-
-        
-    
+ 
         
         return finaldata
         
  
+    }
+    
+    
+    
+    func getBars(data:[[String:Any]])->[[String:Any]]
+    {
+        
+        var finaldata = [[String:Any]]()
+        
+        let numGroups = 3
+        var count = 0
+        
+        while (count < data.count-numGroups)
+        {
+            var lastMax:CGFloat = -10000000
+            var lastMin:CGFloat = 10000000
+            var date:Date=Date()
+            for index in count..<count+numGroups
+            {
+                
+                let pair = data[index]
+                let value:CGFloat=pair["value"] as! CGFloat
+                date=pair["date"] as! Date
+                
+                if(value>lastMax){lastMax=value}
+                if(value<lastMin){lastMin=value}
+
+                
+            }
+ 
+            finaldata.append(["date":date,"value":lastMin])
+            finaldata.append(["date":date,"value":lastMax])
+            
+            count+=numGroups
+        }
+        
+        return finaldata
     }
     
     

@@ -173,6 +173,12 @@ class Graph: UIView {
             
             return
         }
+        
+        else if(animation == "bars")
+        {
+            startDrawingBars(duration:1.0)
+            return
+        }
 
 
         
@@ -211,69 +217,6 @@ class Graph: UIView {
     }
     
     
-    
-    
-    
-    
-    //graph draw height gradually
-    func drawCurve(height:CGFloat)
-    {
-        
-        //less than 2 points
-        if (curvePoints.count<2){ return }
-  
-        
-         let path = UIBezierPath()
-         var point1:CGPoint!
-         var point2:CGPoint!
-         //var smoothData = self.smooth(alpha: 0.4)
-        
-         
-        
-        
-        
-         for i in 0..<curvePoints.count-1
-         {
-                point1 =  curvePoints[i]
-                point2 = curvePoints[i+1]
-            
-               // 1. draw height slowly up 2. change drawing y - screen default start from top
-                point1.y = (size!.height-height*point1.y)
-                point2.y = (size!.height-height*point2.y)
-
-          
-            
-            if( i == 0 ) {path.move(to: point1)}
-            
-            path.addLine(to: point2)
-
-          }
-        
-        
-        //close the path if we have a fill
-        if(curveFillColor != UIColor.clear)
-        {
-        
-              path.addLine(to: CGPoint(x: point2.x, y: frame.height))
-              path.addLine(to: CGPoint(x:curvePoints[0].x, y: frame.height))
-              path.addLine(to: CGPoint(x:curvePoints[0].x, y: size!.height-height*curvePoints[0].y))
-
-        }
- 
-  
-        shapeLayer.path = path.cgPath
-      
- 
- 
-    
-    }
-    
-    
-    
-    
- 
- 
-
  
  
     
@@ -312,6 +255,77 @@ class Graph: UIView {
         animation.duration = Double(duration)
         shapeLayer.add(animation, forKey: "MyAnimation")
     }
+    
+    func startDrawingBars(duration:Float)
+    {
+      
+        shapeLayer.lineWidth=1.0
+        
+        //set the path for maximum height
+        drawBars()
+        
+        let animation = CABasicAnimation(keyPath: "cornerRadius")
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.duration = Double(duration)
+        shapeLayer.add(animation, forKey: "MyAnimation")
+    }
+    
+    
+    
+    //graph draw height gradually
+    func drawCurve(height:CGFloat)
+    {
+        
+        //less than 2 points
+        if (curvePoints.count<2){ return }
+        
+        
+        let path = UIBezierPath()
+        var point1:CGPoint!
+        var point2:CGPoint!
+        //var smoothData = self.smooth(alpha: 0.4)
+        
+        
+        
+        
+        
+        for i in 0..<curvePoints.count-1
+        {
+            point1 =  curvePoints[i]
+            point2 = curvePoints[i+1]
+            
+            // 1. draw height slowly up 2. change drawing y - screen default start from top
+            point1.y = (size!.height-height*point1.y)
+            point2.y = (size!.height-height*point2.y)
+            
+            
+            
+            if( i == 0 ) {path.move(to: point1)}
+            
+            path.addLine(to: point2)
+            
+        }
+        
+        
+        //close the path if we have a fill
+        if(curveFillColor != UIColor.clear)
+        {
+            
+            path.addLine(to: CGPoint(x: point2.x, y: frame.height))
+            path.addLine(to: CGPoint(x:curvePoints[0].x, y: frame.height))
+            path.addLine(to: CGPoint(x:curvePoints[0].x, y: size!.height-height*curvePoints[0].y))
+            
+        }
+        
+        
+        shapeLayer.path = path.cgPath
+        
+        
+        
+        
+    }
+    
     
     
     //lines
@@ -372,6 +386,47 @@ class Graph: UIView {
         shapeLayer.path = path.cgPath
     }
   
+    
+    
+    
+    
+    // point1 holds date and min value, next point2 holds same date and max value. next couple same.
+    func drawBars()
+    {
+        
+        //less than 2 points
+        if (curvePoints.count<2){ return }
+        
+        
+        
+        let path = UIBezierPath()
+        var point1:CGPoint!
+        var point2:CGPoint!
+        
+        let rectWidth = (size?.width)!/30.0
+        
+        let sequence = stride(from: 0, to: (curvePoints.count-1), by: 2)
+        
+        for i in sequence
+        {
+            
+            point1 =  curvePoints[i]
+            point2 = curvePoints[i+1]
+            
+            //draw down from top
+             let rect = CGRect(x: point1.x-rectWidth/2.0, y: (size!.height-point2.y), width: rectWidth, height: abs(point1.y-point2.y))
+
+            //Add a rounded rect to the path
+            path.append(UIBezierPath(roundedRect: rect, cornerRadius: 6.0))
+            
+           }
+        
+ 
+        shapeLayer.path = path.cgPath
+    }
+    
+    
+    
     
     
     
